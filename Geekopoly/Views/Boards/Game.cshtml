@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Geekopoly.Models.Board>
+
+@{
+
+    ViewData["Title"] = "Game";
+}
+
+<script src="~/js/p5.js" asp-append-version="true">
+</script>
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<p>
+    <a class="text" asp-action="Create">Create New Board</a>
+</p>
+<br />
+
+<p>
+    <a class="text" asp-action="Quit">Quit game</a>
+</p>

@@ -18,9 +18,12 @@ namespace Geekopoly.Data
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database=GeekopolyContext-1");
+                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database=GeekopolyContext-2");
             }
         }
+
+
+
         public DbSet<Board> Boards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Dice> Dices { get; set; }

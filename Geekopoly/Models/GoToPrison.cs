@@ -11,7 +11,7 @@ namespace Geekopoly.Models
         [Key]
         public int id_go_to_prison { get; set; }
         public string description { get; set; }
-        private int id_prison = 10;
+        private int id_prison = -20;
 
         public GoToPrison(int id, string name, string description) 
         {

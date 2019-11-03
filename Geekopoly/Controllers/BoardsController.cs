@@ -14,6 +14,16 @@ namespace Geekopoly.Controllers
     {
         private readonly GeekopolyContext _context;
 
+        public IActionResult Game()
+        {
+            return View();
+        }
+
+        public IActionResult Quit()
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
         public BoardsController(GeekopolyContext context)
         {
             _context = context;
@@ -60,7 +70,7 @@ namespace Geekopoly.Controllers
             {
                 _context.Add(board);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Game", "Boards");
             }
             return View(board);
         }
