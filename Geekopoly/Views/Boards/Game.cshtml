@@ -1,19 +1,40 @@
-﻿@model IEnumerable<Geekopoly.Models.Board>
+﻿@model Geekopoly.Models.GameModel
 
-@{
 
-    ViewData["Title"] = "Game";
-}
+<html>
+<head>
+    <script src="~/js/p5.js" asp-append-version="true"></script>
+    <script src="~/js/vue.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
 
-<script src="~/js/p5.js" asp-append-version="true">
-</script>
-<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<body>
+    <br/>
+    <p>
+        <a class="text" asp-action="Create">Create New Board</a>
+    </p>
+    <br />
 
-<p>
-    <a class="text" asp-action="Create">Create New Board</a>
-</p>
-<br />
+    <p>
+        <a class="text" asp-action="Quit">Quit game</a>
+    </p>
+    
+        <script>reloader();</script>
+        <div id="dice">
+            <input type="hidden" name="numbers" v-model="numbers">
+            <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
+        </div>
+   <div id="content">
+            <p>Dices values: @Model.dices_value[0].numbers</p>
 
-<p>
-    <a class="text" asp-action="Quit">Quit game</a>
-</p>
+            @foreach (var p in Model.player_list)
+            {
+                <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
+            }
+    </div>
+
+</body>
+</html>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Geekopoly.Migrations
 {
-    public partial class InitialCreate2 : Migration
+    public partial class myMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,8 @@ namespace Geekopoly.Migrations
                 columns: table => new
                 {
                     id_board = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    current_player_index = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,16 +33,29 @@ namespace Geekopoly.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Dices",
+                name: "Decisions",
                 columns: table => new
                 {
-                    id_dice = table.Column<int>(nullable: false)
+                    id_decision = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    value = table.Column<int>(nullable: false)
+                    decision_value = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dices", x => x.id_dice);
+                    table.PrimaryKey("PK_Decisions", x => x.id_decision);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Dices",
+                columns: table => new
+                {
+                    id_dices = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    numbers = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dices", x => x.id_dices);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +173,9 @@ namespace Geekopoly.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Decisions");
 
             migrationBuilder.DropTable(
                 name: "Dices");

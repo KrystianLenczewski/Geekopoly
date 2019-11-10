@@ -13,6 +13,11 @@ namespace Geekopoly.Data
             : base(options)
         {
         }
+
+        public GeekopolyContext()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -24,6 +29,7 @@ namespace Geekopoly.Data
 
 
 
+        public DbSet<Decision> Decisions { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Dice> Dices { get; set; }

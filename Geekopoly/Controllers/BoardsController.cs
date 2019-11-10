@@ -16,18 +16,94 @@ namespace Geekopoly.Controllers
 
         public IActionResult Game()
         {
+            GeekopolyContext _context = new GeekopolyContext();
+            List<Player> players = new List<Player>();
+            List<Board> board = _context.Boards.ToList();
+            List<Dice> dices = _context.Dices.ToList();
+
+            players = _context.Players.ToList();
+            board = _context.Boards.ToList();
+
+            GameModel game = new GameModel();
+            game.board = board;
+            game.player_list = players;
+            game.dices_value = dices;
+
+            return View(game);
+        }
+
+        [HttpPost]
+        public IActionResult Game([FromBody] Dice dice)
+        {
+
+            GeekopolyContext _context = new GeekopolyContext();
+            int dices_value = dice.numbers;
+            int current_player_index = 0;
+            List<Dice> dices = _context.Dices.ToList();
+            List<Player> player = _context.Players.ToList();
+            List<Board> board = _context.Boards.ToList();
+
+            var current_dices = (from d in dices
+                                 select d);
+
+            foreach(Dice d in current_dices)
+            {
+                d.numbers = dices_value;
+            }
+
+            var selected_board = (from b in board
+                                  select b
+                                 );
+
+            foreach(Board b in board)
+            {
+                current_player_index = b.current_player_index;
+            }
+
+
+            var current_player = (from p in player
+                                  where p.id_player == current_player_index + 1
+                                  select p
+                               );
+            foreach(Player p in current_player)
+            {
+                int current_position = p.position;
+                if(((current_position + dices_value) % 40) <= current_position)
+                {
+                    p.amount_of_cash += 200;
+                }
+                p.position = (current_position + dices_value) % 40;
+            }
+
+            //player[current_player_index].field_action();
+
+            foreach (Board b in board)
+            {
+                b.current_player_index = (current_player_index + 1) % 4;
+            }
+
+
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            
+
             return View();
         }
+
 
         public IActionResult Quit()
         {
             return RedirectToAction(nameof(Index));
         }
 
-        public BoardsController(GeekopolyContext context)
-        {
-            _context = context;
-        }
 
         // GET: Boards
         public async Task<IActionResult> Index()
@@ -64,8 +140,11 @@ namespace Geekopoly.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_board")] Board board)
-        {
+        public async Task<IActionResult> Create([Bind("id_board")] Board board) {
+        
+
+            board.initialize_board();
+
             if (ModelState.IsValid)
             {
                 _context.Add(board);

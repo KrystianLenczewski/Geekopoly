@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geekopoly.Migrations
 {
     [DbContext(typeof(GeekopolyContext))]
-    [Migration("20191103014523_MyMigration")]
-    partial class MyMigration
+    [Migration("20191110164313_myMigration")]
+    partial class myMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,8 @@ namespace Geekopoly.Migrations
                     b.Property<int>("id_board")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("current_player_index");
 
                     b.HasKey("id_board");
 
@@ -43,15 +45,28 @@ namespace Geekopoly.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Geekopoly.Models.Dice", b =>
+            modelBuilder.Entity("Geekopoly.Models.Decision", b =>
                 {
-                    b.Property<int>("id_dice")
+                    b.Property<int>("id_decision")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("value");
+                    b.Property<int>("decision_value");
 
-                    b.HasKey("id_dice");
+                    b.HasKey("id_decision");
+
+                    b.ToTable("Decisions");
+                });
+
+            modelBuilder.Entity("Geekopoly.Models.Dice", b =>
+                {
+                    b.Property<int>("id_dices")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("numbers");
+
+                    b.HasKey("id_dices");
 
                     b.ToTable("Dices");
                 });

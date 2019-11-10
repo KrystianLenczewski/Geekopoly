@@ -9,13 +9,12 @@ namespace Geekopoly.Models
     public class Dice
     {
         [Key]
-        public int id_dice { get; private set; }
-        public int value { get; set; }
+        public int id_dices {get;set;}
+        public int numbers { get; set; }
 
-        public Dice(int id_dice, int value)
-        {
-            this.id_dice = id_dice;
-            this.value = value;
+        public Dice(int value) {
+        
+            this.numbers = value;
         }
 
         public Dice()

@@ -13,9 +13,8 @@ namespace Geekopoly.Models
         public int id_board { get; private set; }
         public List<Player> players;
         public List<Field> fields;
-       // private Field[] fields = new Field[40];
         private MysteriousCard[] mysterious_cards = new MysteriousCard[40];
-        public int current_player_index;
+        public int current_player_index { get; set; }
         public Board()
         {
         }
@@ -52,8 +51,10 @@ namespace Geekopoly.Models
             current_player_index = 0;
             players = new List<Player>()
             {
-                new Player(1,"Krystian"),
-                new Player(2,"Tomek")
+                new Player(0,"Krystian"),
+                new Player(1,"Tomek"),
+                new Player(2,"Maciej"),
+                new Player(3,"Zbigniew")
             };
             fields = new List<Field>()
             {
