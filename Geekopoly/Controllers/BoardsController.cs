@@ -75,7 +75,7 @@ namespace Geekopoly.Controllers
                 p.position = (current_position + dices_value) % 40;
             }
 
-            //player[current_player_index].field_action();
+            player[current_player_index].field_action();
 
             foreach (Board b in board)
             {

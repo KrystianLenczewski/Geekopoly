@@ -75,6 +75,8 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("field_type");
+
                     b.Property<string>("name");
 
                     b.HasKey("id_field");

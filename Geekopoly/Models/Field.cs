@@ -13,7 +13,7 @@ namespace Geekopoly.Models
         public string name { get; set; }
 
         // Type says which type of Field is it: 0 - Mysterious Card, 1 - Start, 2 - GoToPrison, 3 - Prison, 4 - Property
-        public int type { get; set; }
+        public int field_type { get; set; }
 
         public Field()
         {

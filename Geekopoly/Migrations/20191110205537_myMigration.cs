@@ -64,7 +64,8 @@ namespace Geekopoly.Migrations
                 {
                     id_field = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(nullable: true)
+                    name = table.Column<string>(nullable: true),
+                    field_type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

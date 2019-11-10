@@ -65,7 +65,7 @@ namespace Geekopoly.Models
                 }
             }
 
-            int type_of_field = current_field.type;
+            int type_of_field = current_field.field_type;
 
             switch (type_of_field)
             {
