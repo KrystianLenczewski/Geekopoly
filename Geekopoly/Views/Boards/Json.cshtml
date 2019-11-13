@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Json";
+}
+
+<script>
+
+    $(document).ready(function () {
+        //Call EmpDetails jsonResult Method
+        $.getJSON("Boards/Json",
+            function (json) {
+                var tr;
+                //Append each row to html table
+                for (var i = 0; i < json.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + json[i].id_field + "</td>");
+                    tr.append("<td>" + json[i].name + "</td>");
+                    tr.append("<td>" + json[i].field_type + "</td>");
+                    $('table').append(tr);
+                }
+            });
+    });
+
+</script>
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

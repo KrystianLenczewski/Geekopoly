@@ -10,6 +10,7 @@ namespace Geekopoly.Models
         public List<Board> board { get; set; }
         public List<Player> player_list { get; set; }
         public List<Dice> dices_value { get; set; }
+        public List<Field> field_list { get; set; }
 
     }
 }

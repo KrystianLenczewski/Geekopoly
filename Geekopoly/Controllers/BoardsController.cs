@@ -7,27 +7,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Geekopoly.Data;
 using Geekopoly.Models;
+using System.Data.SqlClient;
 
 namespace Geekopoly.Controllers
 {
     public class BoardsController : Controller
     {
         private readonly GeekopolyContext _context;
+        [HttpGet]
+        public JsonResult Json()
+        {
+            GeekopolyContext _context = new GeekopolyContext();
 
+            List<Field> fields = _context.Fields.ToList();
+            fields = _context.Fields.ToList();
+            return Json(fields);
+        }
         public IActionResult Game()
         {
             GeekopolyContext _context = new GeekopolyContext();
             List<Player> players = new List<Player>();
             List<Board> board = _context.Boards.ToList();
             List<Dice> dices = _context.Dices.ToList();
-
+            List<Field> fields = _context.Fields.ToList();
             players = _context.Players.ToList();
             board = _context.Boards.ToList();
-
+            fields = _context.Fields.ToList();
             GameModel game = new GameModel();
             game.board = board;
             game.player_list = players;
             game.dices_value = dices;
+            game.field_list = fields;
+            var json = Json();
 
             return View(game);
         }
@@ -42,11 +53,12 @@ namespace Geekopoly.Controllers
             List<Dice> dices = _context.Dices.ToList();
             List<Player> player = _context.Players.ToList();
             List<Board> board = _context.Boards.ToList();
+            List<Field> field = _context.Fields.ToList();
 
             var current_dices = (from d in dices
                                  select d);
 
-            foreach(Dice d in current_dices)
+            foreach (Dice d in current_dices)
             {
                 d.numbers = dices_value;
             }
@@ -55,7 +67,7 @@ namespace Geekopoly.Controllers
                                   select b
                                  );
 
-            foreach(Board b in board)
+            foreach (Board b in board)
             {
                 current_player_index = b.current_player_index;
             }
@@ -65,10 +77,10 @@ namespace Geekopoly.Controllers
                                   where p.id_player == current_player_index + 1
                                   select p
                                );
-            foreach(Player p in current_player)
+            foreach (Player p in current_player)
             {
                 int current_position = p.position;
-                if(((current_position + dices_value) % 40) <= current_position)
+                if (((current_position + dices_value) % 40) <= current_position)
                 {
                     p.amount_of_cash += 200;
                 }
@@ -88,12 +100,12 @@ namespace Geekopoly.Controllers
             {
                 _context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
 
-            
+
 
             return View();
         }
@@ -140,8 +152,9 @@ namespace Geekopoly.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_board")] Board board) {
-        
+        public async Task<IActionResult> Create([Bind("id_board")] Board board)
+        {
+
 
             board.initialize_board();
 

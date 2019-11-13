@@ -1,18 +1,34 @@
 ﻿@model Geekopoly.Models.GameModel
-
+@inject IJsonHelper Json;
 
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/js/p5.js" asp-append-version="true"></script>
     <script src="~/js/vue.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="~/js/Tile.js"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/js/sketch.js"></script>
+
+
+
+
 </head>
 
 <body>
-    <br/>
+    <table class="table table-bordered table-condensed table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>TypeOfField</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    </table>
+    <br />
     <p>
         <a class="text" asp-action="Create">Create New Board</a>
     </p>
@@ -21,20 +37,24 @@
     <p>
         <a class="text" asp-action="Quit">Quit game</a>
     </p>
-    
-        <script>reloader();</script>
-        <div id="dice">
-            <input type="hidden" name="numbers" v-model="numbers">
-            <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
-        </div>
-   <div id="content">
-            <p>Dices values: @Model.dices_value[0].numbers</p>
 
-            @foreach (var p in Model.player_list)
-            {
-                <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
-            }
+    <script>reloader();</script>
+    <div id="dice">
+        <input type="hidden" name="numbers" v-model="numbers">
+        <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
     </div>
+    <div id="content">
+        <p>Dices values: @Model.dices_value[0].numbers</p>
+
+        @foreach (var p in Model.player_list)
+        {
+            <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
+        }
+    </div>
+
+    <br />
+    <br />
+    <br />
 
 </body>
 </html>
