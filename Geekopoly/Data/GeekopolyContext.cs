@@ -23,7 +23,7 @@ namespace Geekopoly.Data
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database=GeekopolyContext-22");
+                optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb;Database=GeekopolyContext-New_After_Merge");
             }
         }
 

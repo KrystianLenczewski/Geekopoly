@@ -1,5 +1,4 @@
-﻿
-class Tile {
+﻿class Tile {
     constructor(x, y, lar, alt, id_Field, nameOfField, TypeOfField) {
 
         this.x = x;
