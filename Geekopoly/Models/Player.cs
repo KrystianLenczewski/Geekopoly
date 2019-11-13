@@ -18,7 +18,7 @@ namespace Geekopoly.Models
         public string name { get; set; }
         public int amount_of_cash { get; set; } = initial_player_money;
         public int position { get; set; }
-        public bool is_in_jail { get; private set; } = false;
+        public bool is_in_jail { get; set; } = false;
         public List<Property> Properties { get; set; } = new List<Property>();
 
 
@@ -67,6 +67,7 @@ namespace Geekopoly.Models
 
             int type_of_field = current_field.field_type;
 
+
             switch (type_of_field)
             {
                 // Mysterious Card
@@ -97,10 +98,12 @@ namespace Geekopoly.Models
                         if (gtp.id_go_to_prison == current_field.id_field)
                         {
                             go_to_prison = gtp;
-                            break;
+                            
                         }
                     }
-                    break;
+                    
+                    this.position = 10;
+                    goto case 3;
                 // Prison
                 case 3:
                     foreach (Prison p in prisons)
@@ -111,6 +114,7 @@ namespace Geekopoly.Models
                             break;
                         }
                     }
+                    this.is_in_jail = true;
                     break;
                 // Property
                 case 4:
@@ -131,6 +135,176 @@ namespace Geekopoly.Models
 
 
 
+
+        }
+
+        public int find_next_free_player_id(int current_player_id)
+        {
+            GeekopolyContext gp = new GeekopolyContext();
+            List<Player> player = gp.Players.ToList();
+            bool found_flag = false;
+            int value;
+            int minimum = 0;
+            int maximum = 0;
+            int counter = 0;
+            int current_position;
+            int return_value = 0;
+
+            switch (current_player_id){
+                case 1:
+                    value = 4;
+                    int difference = 4;
+                    foreach(Player p in player)
+                    {
+                        if (p.id_player != current_player_id && p.is_in_jail == false)
+                        {
+                            if (Math.Abs(current_player_id - p.id_player) < difference )
+                            {
+                                difference = Math.Abs(current_player_id - p.id_player);
+                                value = p.id_player;
+                                found_flag = true;
+                            }
+                        }
+                    }
+                    if(value == 4)
+                    {
+                        return_value = 0;
+                    }
+                    else
+                    {
+                        return_value = value;
+                    }
+                    break;
+                case 2:
+                    counter = 0;
+                    current_position = current_player_id-1;
+                    int min_difference = 3;
+                    int max_difference = 0;
+                    while (counter<3)
+                    {
+                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false)
+                        {
+                            if (Math.Abs(current_player_id - player[current_position].id_player) < min_difference   && player[current_position].id_player > current_player_id)
+                            {
+                                min_difference = Math.Abs(current_player_id - player[current_position].id_player);
+                                minimum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                            else if(max_difference < Math.Abs(current_player_id - player[current_position].id_player) && player[current_position].id_player > current_player_id)
+                            {
+                                max_difference = Math.Abs(current_player_id - player[current_position].id_player);
+                                maximum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                            else if(minimum == 3 && maximum == 0){
+                                minimum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                        }
+                        current_position = (current_position + 1) % 4;
+                        counter++;
+                    }
+                    if (found_flag)
+                    {
+                        if (minimum>current_player_id)
+                        {
+                            return_value = minimum;
+                        }
+                        else if(minimum<current_player_id && maximum == 3)
+                        {
+                            return_value = minimum;
+                        }
+                        else
+                        {
+                            return_value = maximum;
+                        }
+                    }
+                    else
+                    {
+                        return_value = 0;
+                    }
+                    current_position++;
+                    break;
+                case 3:
+                    counter = 0;
+                    min_difference = 3;
+                    max_difference = 0;
+                    current_position = current_player_id - 1;
+                    while (counter < 3)
+                    {
+                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false)
+                        {
+                            if (min_difference > Math.Abs(current_player_id - player[current_position].id_player) && player[current_position].id_player > current_player_id)
+                            {
+                                min_difference = Math.Abs(current_player_id - player[current_position].id_player);
+                                minimum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                            else if (max_difference < Math.Abs(current_player_id - player[current_position].id_player) && player[current_position].id_player > current_player_id)
+                            {
+                                max_difference = Math.Abs(current_player_id - player[current_position].id_player);
+                                maximum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                            else if (minimum == 3 && maximum == 0)
+                            {
+                                minimum = player[current_position].id_player;
+                                found_flag = true;
+                            }
+                        }
+                        current_position = (current_position + 1) % 4;
+                        counter++;
+                    }
+                    if (found_flag)
+                    {
+                        if (minimum > current_player_id)
+                        {
+                            return_value = minimum;
+                        }
+                        else if (minimum < current_player_id && maximum == 3)
+                        {
+                            return_value = minimum;
+                        }
+                        else
+                        {
+                            return_value = maximum;
+                        }
+                    }
+                    else
+                    {
+                        return_value = 0;
+                    }
+                    current_position++;
+                    break;
+                case 4:
+                    value = 0;
+                    difference = 0;
+                    foreach (Player p in player)
+                    {
+                        if (p.id_player != current_player_id && p.is_in_jail == false)
+                        {
+                            if (difference < Math.Abs(current_player_id - p.id_player))
+                            {
+                                difference = Math.Abs(current_player_id - p.id_player);
+                                value = p.id_player;
+                                found_flag = true;
+                            }
+                        }
+                    }
+                    if (value == 0)
+                    {
+                        return_value = 0;
+                    }
+                    else
+                    {
+                        return_value = value;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return return_value;
 
         }
 

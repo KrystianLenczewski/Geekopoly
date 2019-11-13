@@ -58,7 +58,27 @@ namespace Geekopoly.Controllers
             foreach(Board b in board)
             {
                 current_player_index = b.current_player_index;
+                if (player[current_player_index].is_in_jail == true)
+                {
+                    int next_index = player[current_player_index].find_next_free_player_id(current_player_index + 1) - 1;
+                    if (next_index >= 0)
+                    {
+                        player[current_player_index].is_in_jail = false;
+                        current_player_index = next_index;
+
+                    }
+                    else
+                    {
+                        foreach (Player p in player)
+                        {
+                            p.is_in_jail = false;
+                        }
+                        b.current_player_index = 0;
+                        current_player_index = 0;
+                    }
+                }
             }
+
 
 
             var current_player = (from p in player

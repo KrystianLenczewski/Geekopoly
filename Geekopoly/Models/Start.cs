@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,8 +12,10 @@ namespace Geekopoly.Models
     {
         [Key]
         public int id_start { get; set; }
-        public string name { get; set; }
-        public static int reward { get; } = 200;
+        public int reward { get; set; }
+        public Field field { get; set; }
+        [ForeignKey("field")]
+        public int fieldFK { get; set; }
         public Start()
         {
 

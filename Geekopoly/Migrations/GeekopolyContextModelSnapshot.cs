@@ -38,6 +38,12 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("entry_value");
+
+                    b.Property<string>("name");
+
+                    b.Property<int>("upgrade_cost");
+
                     b.HasKey("id_category");
 
                     b.ToTable("Categories");
@@ -92,7 +98,11 @@ namespace Geekopoly.Migrations
 
                     b.Property<string>("description");
 
+                    b.Property<int>("fieldFK");
+
                     b.HasKey("id_go_to_prison");
+
+                    b.HasIndex("fieldFK");
 
                     b.ToTable("GoToPrisons");
                 });
@@ -103,7 +113,11 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("FieldFK");
+
                     b.HasKey("id_mysterious_card");
+
+                    b.HasIndex("FieldFK");
 
                     b.ToTable("MysteriousCards");
                 });
@@ -135,9 +149,11 @@ namespace Geekopoly.Migrations
 
                     b.Property<string>("description");
 
-                    b.Property<string>("name");
+                    b.Property<int>("fieldFK");
 
                     b.HasKey("id_prison");
+
+                    b.HasIndex("fieldFK");
 
                     b.ToTable("Prisons");
                 });
@@ -148,15 +164,19 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("id_category");
+                    b.Property<int>("categoryFK");
 
-                    b.Property<int?>("ownerid_player");
+                    b.Property<int>("fieldFK");
 
-                    b.Property<int>("type_of_property");
+                    b.Property<int?>("ownerFK");
+
+                    b.Property<int?>("type_of_property");
 
                     b.HasKey("id_property");
 
-                    b.HasIndex("ownerid_player");
+                    b.HasIndex("fieldFK");
+
+                    b.HasIndex("ownerFK");
 
                     b.ToTable("Properties");
                 });
@@ -167,18 +187,59 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("name");
+                    b.Property<int>("fieldFK");
+
+                    b.Property<int>("reward");
 
                     b.HasKey("id_start");
+
+                    b.HasIndex("fieldFK");
 
                     b.ToTable("Starts");
                 });
 
+            modelBuilder.Entity("Geekopoly.Models.GoToPrison", b =>
+                {
+                    b.HasOne("Geekopoly.Models.Field", "field")
+                        .WithMany()
+                        .HasForeignKey("fieldFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Geekopoly.Models.MysteriousCard", b =>
+                {
+                    b.HasOne("Geekopoly.Models.Field", "field")
+                        .WithMany()
+                        .HasForeignKey("FieldFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Geekopoly.Models.Prison", b =>
+                {
+                    b.HasOne("Geekopoly.Models.Field", "field")
+                        .WithMany()
+                        .HasForeignKey("fieldFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Geekopoly.Models.Property", b =>
                 {
+                    b.HasOne("Geekopoly.Models.Field", "field")
+                        .WithMany()
+                        .HasForeignKey("fieldFK")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Geekopoly.Models.Player", "owner")
                         .WithMany("Properties")
-                        .HasForeignKey("ownerid_player");
+                        .HasForeignKey("ownerFK");
+                });
+
+            modelBuilder.Entity("Geekopoly.Models.Start", b =>
+                {
+                    b.HasOne("Geekopoly.Models.Field", "field")
+                        .WithMany()
+                        .HasForeignKey("fieldFK")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

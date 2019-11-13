@@ -25,7 +25,10 @@ namespace Geekopoly.Migrations
                 columns: table => new
                 {
                     id_category = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(nullable: true),
+                    entry_value = table.Column<int>(nullable: false),
+                    upgrade_cost = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,31 +76,6 @@ namespace Geekopoly.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GoToPrisons",
-                columns: table => new
-                {
-                    id_go_to_prison = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GoToPrisons", x => x.id_go_to_prison);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MysteriousCards",
-                columns: table => new
-                {
-                    id_mysterious_card = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MysteriousCards", x => x.id_mysterious_card);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
@@ -114,17 +92,62 @@ namespace Geekopoly.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GoToPrisons",
+                columns: table => new
+                {
+                    id_go_to_prison = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    description = table.Column<string>(nullable: true),
+                    fieldFK = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GoToPrisons", x => x.id_go_to_prison);
+                    table.ForeignKey(
+                        name: "FK_GoToPrisons_Fields_fieldFK",
+                        column: x => x.fieldFK,
+                        principalTable: "Fields",
+                        principalColumn: "id_field",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MysteriousCards",
+                columns: table => new
+                {
+                    id_mysterious_card = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FieldFK = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MysteriousCards", x => x.id_mysterious_card);
+                    table.ForeignKey(
+                        name: "FK_MysteriousCards_Fields_FieldFK",
+                        column: x => x.FieldFK,
+                        principalTable: "Fields",
+                        principalColumn: "id_field",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prisons",
                 columns: table => new
                 {
                     id_prison = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(nullable: true),
-                    description = table.Column<string>(nullable: true)
+                    description = table.Column<string>(nullable: true),
+                    fieldFK = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prisons", x => x.id_prison);
+                    table.ForeignKey(
+                        name: "FK_Prisons_Fields_fieldFK",
+                        column: x => x.fieldFK,
+                        principalTable: "Fields",
+                        principalColumn: "id_field",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,11 +156,18 @@ namespace Geekopoly.Migrations
                 {
                     id_start = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(nullable: true)
+                    reward = table.Column<int>(nullable: false),
+                    fieldFK = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Starts", x => x.id_start);
+                    table.ForeignKey(
+                        name: "FK_Starts_Fields_fieldFK",
+                        column: x => x.fieldFK,
+                        principalTable: "Fields",
+                        principalColumn: "id_field",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,25 +176,57 @@ namespace Geekopoly.Migrations
                 {
                     id_property = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    id_category = table.Column<int>(nullable: false),
-                    type_of_property = table.Column<int>(nullable: false),
-                    ownerid_player = table.Column<int>(nullable: true)
+                    type_of_property = table.Column<int>(nullable: true),
+                    ownerFK = table.Column<int>(nullable: true),
+                    fieldFK = table.Column<int>(nullable: false),
+                    categoryFK = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.id_property);
                     table.ForeignKey(
-                        name: "FK_Properties_Players_ownerid_player",
-                        column: x => x.ownerid_player,
+                        name: "FK_Properties_Fields_fieldFK",
+                        column: x => x.fieldFK,
+                        principalTable: "Fields",
+                        principalColumn: "id_field",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Properties_Players_ownerFK",
+                        column: x => x.ownerFK,
                         principalTable: "Players",
                         principalColumn: "id_player",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_ownerid_player",
+                name: "IX_GoToPrisons_fieldFK",
+                table: "GoToPrisons",
+                column: "fieldFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MysteriousCards_FieldFK",
+                table: "MysteriousCards",
+                column: "FieldFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Prisons_fieldFK",
+                table: "Prisons",
+                column: "fieldFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_fieldFK",
                 table: "Properties",
-                column: "ownerid_player");
+                column: "fieldFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_ownerFK",
+                table: "Properties",
+                column: "ownerFK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Starts_fieldFK",
+                table: "Starts",
+                column: "fieldFK");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -180,9 +242,6 @@ namespace Geekopoly.Migrations
 
             migrationBuilder.DropTable(
                 name: "Dices");
-
-            migrationBuilder.DropTable(
-                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "GoToPrisons");
@@ -201,6 +260,9 @@ namespace Geekopoly.Migrations
 
             migrationBuilder.DropTable(
                 name: "Players");
+
+            migrationBuilder.DropTable(
+                name: "Fields");
         }
     }
 }
