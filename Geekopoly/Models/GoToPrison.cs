@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,9 @@ namespace Geekopoly.Models
         [Key]
         public int id_go_to_prison { get; set; }
         public string description { get; set; }
-        private int id_prison = -20;
+        public Field field { get; set; }
+        [ForeignKey("field")]
+        public int fieldFK { get; set; }
 
         public GoToPrison(int id, string name, string description) 
         {

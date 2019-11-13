@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,9 @@ namespace Geekopoly.Models
         public int? penalty = null;
         public int? reward = null;
         public Boolean? prison = null;
+        public Field field { get; set; }
+        [ForeignKey("field")]
+        public int FieldFK { get; set; }
 
 
         public MysteriousCard(int id, string name, int id_card, string description, int? penalty, int? reward, Boolean? prison) 
