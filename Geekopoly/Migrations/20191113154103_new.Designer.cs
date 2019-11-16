@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geekopoly.Migrations
 {
     [DbContext(typeof(GeekopolyContext))]
-    [Migration("20191113150923_new")]
+    [Migration("20191113154103_new")]
     partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

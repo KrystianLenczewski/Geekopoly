@@ -20,9 +20,23 @@ namespace Geekopoly.Controllers
             GeekopolyContext _context = new GeekopolyContext();
 
             List<Field> fields = _context.Fields.ToList();
+            List<Property> properties = _context.Properties.ToList();
+            properties = _context.Properties.ToList();
+            List<Category> categories = _context.Categories.ToList();
+            List<Player> players = _context.Players.ToList();
+           
+            categories = _context.Categories.ToList();
             fields = _context.Fields.ToList();
-            return Json(fields);
+            players = _context.Players.ToList();
+            JSONModel jsonmodel = new JSONModel();
+            jsonmodel.category_list = categories;
+            jsonmodel.field_list = fields;
+            jsonmodel.property_list = properties;
+            jsonmodel.player_list = players;
+            return Json(jsonmodel);
         }
+        
+       
         public IActionResult Game()
         {
             GeekopolyContext _context = new GeekopolyContext();
@@ -38,8 +52,9 @@ namespace Geekopoly.Controllers
             game.player_list = players;
             game.dices_value = dices;
             game.field_list = fields;
-            var json = Json();
-
+            
+                    var json = Json();
+          
             return View(game);
         }
 

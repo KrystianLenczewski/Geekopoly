@@ -11,23 +11,16 @@
     <script src="~/js/Tile.js"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="~/js/sketch.js"></script>
-
+    <script src="~/js/Player.js"></script>
+    <script src="~/js/category_class.js"></script>
+    <script src="~/js/Counter.js"></script>
 
 
 
 </head>
 
 <body>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>TypeOfField</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-    </table>
+
     <br />
     <p>
         <a class="text" asp-action="Create">Create New Board</a>
@@ -37,24 +30,23 @@
     <p>
         <a class="text" asp-action="Quit">Quit game</a>
     </p>
+    <div id="playerOnBoard">
+        <script>reloader();</script>
+        <div id="dice">
+            <input type="hidden" name="numbers" v-model="numbers">
+            <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
+        </div>
+        <div id="content">
+            <p>Dices values: @Model.dices_value[0].numbers</p>
 
-    <script>reloader();</script>
-    <div id="dice">
-        <input type="hidden" name="numbers" v-model="numbers">
-        <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
+            @foreach (var p in Model.player_list)
+            {
+                <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
+            }
+        </div>
+
+        <br />
     </div>
-    <div id="content">
-        <p>Dices values: @Model.dices_value[0].numbers</p>
-
-        @foreach (var p in Model.player_list)
-        {
-            <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
-        }
-    </div>
-
-    <br />
-    <br />
-    <br />
 
 </body>
 </html>
