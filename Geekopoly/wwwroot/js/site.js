@@ -1,7 +1,8 @@
 ﻿var dice = new Vue({
     el: '#dice',
     data: {
-        numbers: "0"
+        numbers: "0",
+        values: "5"
     },
     methods: {
         sendToServer: function() {
@@ -21,6 +22,24 @@
                 .catch(function (error){
                     console.log(error);
                 });
+        }
+    }
+});
+
+
+var modal = new Vue({
+    el: '#modal',
+    data: {
+        decision: false
+    },
+    methods: {
+        modalAction() {
+            if (this.decision === false) {
+                this.decision = true;
+            }
+            else {
+                this.decision = false;
+            }
         }
     }
 });

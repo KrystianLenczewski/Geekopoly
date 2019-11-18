@@ -58,17 +58,34 @@ namespace Geekopoly.Controllers
             return View(game);
         }
 
+        //[HttpPost]
+        //public IActionResult Game(int value)
+        //{
+        //    var received_value = value;
+        //    return View();
+        //}
+
         [HttpPost]
-        public IActionResult Game([FromBody] Dice dice)
+        public IActionResult Game([FromBody] RollingDicesReturnModel return_model)
         {
 
             GeekopolyContext _context = new GeekopolyContext();
-            int dices_value = dice.numbers;
+            int dices_value = return_model.numbers;
+            int value_of_decision = return_model.decision_value;
             int current_player_index = 0;
             List<Dice> dices = _context.Dices.ToList();
             List<Player> player = _context.Players.ToList();
             List<Board> board = _context.Boards.ToList();
             List<Field> field = _context.Fields.ToList();
+            List<Decision> decision = _context.Decisions.ToList();
+
+            var current_decision = (from d in decision
+                                    select d);
+
+            foreach (Decision d in current_decision)
+            {
+                d.decision_value = value_of_decision;
+            }
 
             var current_dices = (from d in dices
                                  select d);

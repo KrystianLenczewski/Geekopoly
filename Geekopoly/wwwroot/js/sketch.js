@@ -4,7 +4,7 @@ var flag = false;
 
 $(document).ready(function () {
     //Call EmpDetails jsonResult Method
-    $.getJSON("Boards/Json",
+    $.getJSON("/Boards/Json",
         function (json) {
 
             for (var i = 0; i < 40; i++) {
@@ -59,14 +59,14 @@ window.players = [];
 for (var i = 0; i < 40; i++) {
     window.fields[i] = { id_Field: 0, nameOfField2: ' ', TypeOfField: 0, Price: 0 }
 }
-for (var i = 0; i < 28; i++) {
+for (i = 0; i < 28; i++) {
     window.properites[i] = { id_Property: 0, type_Of_Property: 0, owner_FK: 0, field_Fk: 0, category_FK: 0 }
 }
-for (var i = 0; i < 9; i++) {
+for (i = 0; i < 9; i++) {
     window.categories[i] = { id_Category: 0, Name: '', entry_Value: 0, upgrade_Cost: 0 }
 }
 
-for (var i = 0; i < 4; i++) {
+for (i = 0; i < 4; i++) {
     window.players[i] = {id_Player:0,NameOfPlayer:'',AmountOfCash:0,PositionPlayer:0}
 }
 window.all_fields = [];
@@ -79,10 +79,16 @@ var widthheight = 880;
 let initialPosX = 225;
 let initialPosY = 225;
 var PlayerArray = [];
+
+var dice;
+var dice_clicked = false;
+
 var m = 0;
 var n = 0;
 var b = 0;
 var counters = [];
+var url = "/Boards/Game";
+
 function setup() {
     createCanvas(1800, 1800);
     background(255);
@@ -144,7 +150,7 @@ function draw() {
                     if (properites[z].field_Fk == fields[m].id_Field)
                         if (a <= 4) {
                             newtile[k].property1[a] = fields[m].nameOfField2;
-a = a + 1;
+                                a = a + 1;
                         }
                       
                     
@@ -178,7 +184,7 @@ a = a + 1;
     for (var i = 0; i < 11; i++) {
 
         var posX2 = map(i, 0, 11, 0, widthheight);
-        if (k2 => 21) {
+        if (k2 >= 21) {
             tileRowdown[i] = new Tile(posX2, widthheight - x, x, x, fields[k2].id_Field, fields[k2].nameOfField2, fields[k2].TypeOfField);
             k2 = k2 - 1;
         }
@@ -188,14 +194,17 @@ a = a + 1;
 
         var posY = map(i, 0, 11, 0, widthheight);
 
-        if (k3 => 30) {
+        if (k3 >= 30) {
             tileColLeft[i] = new Tile(0, posY, x, x, fields[k3].id_Field, fields[k3].nameOfField2, fields[k3].TypeOfField);
             k3 = k3 - 1;
         }
 
     }
 
-
+    if (dice_clicked) {
+        dice.dice_roll();
+        dice.dice_clicked = false;
+    }
 
     if (flag) {
         while (pom < 40) {
@@ -272,16 +281,24 @@ a = a + 1;
         for (var i = 0; i < 4; i++) {
             PlayerArray[i].show_player();
         }
+
+        dice = new Dice(350, 350, 150, 150);
+        dice.show_dice();
         flag = false;
     }
-   
+}
 
-   
-
-
-
-
+function mousePressed() {
+    dice.dice_pressed();
 
 }
 
+
+function dataPosted(result) {
+    console.log(result);
+}
+
+function dataError(err) {
+    console.log(err);
+}
 
