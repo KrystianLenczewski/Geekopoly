@@ -26,6 +26,7 @@ namespace Geekopoly.Models
         {
             this.id_player = id_player;
             this.name = name;
+            this.position = position;
         }
 
         public Player()

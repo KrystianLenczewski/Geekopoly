@@ -10,7 +10,7 @@ using Geekopoly.Models;
 namespace Geekopoly.Data
 {
     public class PlayersController : Controller
-    {
+    {   
         private readonly GeekopolyContext _context;
 
         public PlayersController(GeekopolyContext context)
@@ -21,6 +21,8 @@ namespace Geekopoly.Data
         // GET: Players
         public async Task<IActionResult> Index()
         {
+           
+           
             return View(await _context.Players.ToListAsync());
         }
 
@@ -94,6 +96,7 @@ namespace Geekopoly.Data
 
             if (ModelState.IsValid)
             {
+                player.position = 0;
                 try
                 {
                     _context.Update(player);

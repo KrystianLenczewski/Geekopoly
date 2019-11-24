@@ -15,39 +15,23 @@
             <th>
                 @Html.DisplayNameFor(model => model.name)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.amount_of_cash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.position)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.is_in_jail)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
+      
 @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
+              
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.amount_of_cash)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.position)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.is_in_jail)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id_player">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id_player">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id_player">Delete</a>
+                        <td>
+                <a asp-action="Edit" asp-route-id="@item.id_player">Add name</a> |
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div class="span12">
+    <a href="/Boards/Game" class="Button">Submit</a>
+</div>
