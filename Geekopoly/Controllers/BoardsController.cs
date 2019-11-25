@@ -80,7 +80,7 @@ namespace Geekopoly.Controllers
         //}
 
         [HttpPost]
-        public async Task <IActionResult> Game([FromBody] RollingDicesReturnModel return_model)
+        public IActionResult Game([FromBody] RollingDicesReturnModel return_model)
         {
 
             GeekopolyContext _context = new GeekopolyContext();
