@@ -38,7 +38,18 @@ namespace Geekopoly.Controllers
             jsonmodel.board_list = boards;
             return Json(jsonmodel);
         }
-  
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(player);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(player);
+        }
 
         public IActionResult Game()
         {
@@ -168,10 +179,29 @@ namespace Geekopoly.Controllers
 
         public IActionResult Quit()
         {
-            return RedirectToAction(nameof(Index));
+            
+          
+           
+            return RedirectToAction("Index", "Players", new { area = "Admin" });
         }
 
 
+        public IActionResult NewGame()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewGame([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(player);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(player);
+        }
         // GET: Boards
         public async Task<IActionResult> Index()
         {
@@ -197,10 +227,8 @@ namespace Geekopoly.Controllers
         }
 
         // GET: Boards/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+       
+     
 
         // POST: Boards/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -221,6 +249,7 @@ namespace Geekopoly.Controllers
             }
             return View(board);
         }
+
 
         // GET: Boards/Edit/5
         public async Task<IActionResult> Edit(int? id)

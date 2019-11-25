@@ -1,13 +1,10 @@
-﻿
-
-var flag = false;
-var flag2 = false;
+﻿var flag = false;
 var json_object;
 
 window.fields = [];
 window.properites = [];
 window.categories = [];
-window.newtile = [];
+var newtile = [];
 window.players = [];
 for (var i = 0; i < 40; i++) {
     window.fields[i] = { id_Field: 0, nameOfField2: ' ', TypeOfField: 0, Price: 0 };
@@ -22,24 +19,11 @@ for (i = 0; i < 9; i++) {
 for (i = 0; i < 4; i++) {
     window.players[i] = { id_Player: 0, NameOfPlayer: '', AmountOfCash: 0, PositionPlayer: 0 };
 }
-window.all_fields = [];
 
-var tileRowUp = [];
-var tileColLeft = [];
-var tileColRight = [];
-var tileRowdown = [];
 var widthheight = 880;
-let initialPosX = 225;
-let initialPosY = 225;
 var PlayerArray = [];
 var FieldArray = [];
-
-
-var d = 0;
-var m = 0;
-var n = 0;
-var b = 0;
-
+var CategoryArray = [];
 var counters = [];
 
 function preload() {
@@ -47,47 +31,46 @@ function preload() {
     let url = '/Boards/Json';
     httpGet(url, 'json', function (response) {
         flag = true;
-        flag2 = true;
         json_object = response;
         setup();
     });
-
-
 }
-
-
+var m = 0;
 
 
 function setup() {
     createCanvas(1800, 1800);
     background(255);
 
+
     for (var i = 0; i < 3; i++) {
 
         for (var k = 0; k < 3; k++) {
-            var x = (i + 4) * initialPosX;
-            var y = (k) * initialPosY;
-            newtile[m] = new category_class('', x, y, 150, 150, '');
+            var x = (i + 4) * 255;
+            var y = (k) * 225;
+            newtile[m] = new category_class('', x, y, 150, 150, '', 0, 0, 0);
 
             m = m + 1;
         }
     }
+    let b2 = 0;
     for (var i = 0; i < 2; i++) {
         for (k = 0; k < 2; k++) {
             var x = (i + 5) * 200;
             var y = (k + 6) * 110;
-            PlayerArray[b] = new Player(x, y, 100, 100, 0, '', 0, 0);
-            b = b + 1;
+            PlayerArray[b2] = new Player(x, y, 100, 100, 0, '', 0, 0);
+            b2 = b2 + 1;
         }
     }
     for (let i = 0; i < 40; i++) {
 
         FieldArray[i] = new Tile(0, 0, 0, 0, 0, '', 0, 0);
     }
+    for (let i = 0; i < 9; i++) {
+        CategoryArray[i] = new category_class('', 0, 0, 150, 150, '', 0, 0, 0);
+    }
 
-
-    if (flag2)
-    {
+    if (flag) {
         for (let i = 0; i < 40; i++) {
             fields[i].nameOfField2 = json_object.field_list[i].name;
             fields[i].id_Field = json_object.field_list[i].id_field;
@@ -127,155 +110,26 @@ function setup() {
         }
 
 
-        for (let i = 0; i < 4; i++) {
-            FieldArray[i].id_Field = fields[i].nameOfField2;
-            FieldArray[i].nameOfField = fields[i].id_Field;
+        for (let i = 0; i < 40; i++) {
+            FieldArray[i].id_Field = fields[i].id_Field;
+            FieldArray[i].nameOfField = fields[i].nameOfField2;
             FieldArray[i].TypeOfField = fields[i].TypeOfField;
         }
 
-    }
-    for (let i = 0; i < 2; i++) {
-        for (let z = 0; z < 2; z++) {
-            let x = (i + 1) * 20;
-            let y = (z + 2) * 20;
-            counters[d] = new Counter(x, y, 10, 10, 0, '', 0, 0, 0);
-            d = d + 1;
+        for (let i = 0; i < 9; i++) {
+
+            CategoryArray[i].id_Category = categories[i].id_Category;
+            CategoryArray[i].nameOfCategory = categories[i].Name;
+            CategoryArray[i].entry_Value = categories[i].entry_Value;
+            CategoryArray[i].upgrade_Cost = categories[i].upgrade_Cost;
         }
-    }
-    for (let i = 0; i < 4; i++) {
-        counters[i].id_Player = players[i].id_Player;
-        counters[i].Name_Player = players[i].NameOfPlayer;
-        counters[i].amount_Of_Cash = players[i].AmountOfCash;
-        counters[i].Position = players[i].PositionPlayer;
-        counters[0].Color = 'RED';
-        counters[1].Color = 'BLUE';
-        counters[2].Color = 'YELLOW';
-        counters[3].Color = 'BLACK';
-
-    }
-
-}
-
-var k = 11;
-var x = 80;
-var pom = 0;
-var pom1 = 0;
-var m2 = 0;
-
-var clicked = 0;
-
-
-function draw() {
-
-
-
-    for (var k = 0; k < 9; k++) {
-        var a = 0;
-        newtile[k].nameOfCategory = categories[k].Name;
-        for (var z = 0; z < 28; z++) {
-            if (categories[k].id_Category == properites[z].category_FK) {
-                for (var m = 0; m < 40; m++) {
-                    if (properites[z].field_Fk == fields[m].id_Field)
-                        if (a <= 4) {
-                            newtile[k].property1[a] = fields[m].nameOfField2;
-                            a = a + 1;
-                        }
-
-
-                }
-            }
-
-        }
-
-
-    }
-
-    for (var i = 0; i < 11; i++) {
-
-        var posX = map(i, 0, 11, 0, widthheight);
-
-        tileRowUp[i] = new Tile(posX, 0, x, x, fields[i].id_Field, fields[i].nameOfField2, fields[i].TypeOfField);
-
-    }
-
-    var k = 10;
-    for (var i = 0; i < 11; i++) {
-
-        var posX = map(i, 0, 11, 0, widthheight);
-        if (k < 21) {
-            tileColRight[i] = new Tile(widthheight - x, posX, x, x, fields[k].id_Field, fields[k].nameOfField2, fields[k].TypeOfField);
-            k = k + 1;
-
-        }
-    }
-    var k2 = 30;
-    for (var i = 0; i < 11; i++) {
-
-        var posX2 = map(i, 0, 11, 0, widthheight);
-        if (k2 >= 21) {
-            tileRowdown[i] = new Tile(posX2, widthheight - x, x, x, fields[k2].id_Field, fields[k2].nameOfField2, fields[k2].TypeOfField);
-            k2 = k2 - 1;
-        }
-    }
-    var k3 = 39;
-    for (var i = 1; i < 11; i++) {
-
-        var posY = map(i, 0, 11, 0, widthheight);
-
-        if (k3 >= 30) {
-            tileColLeft[i] = new Tile(0, posY, x, x, fields[k3].id_Field, fields[k3].nameOfField2, fields[k3].TypeOfField);
-            k3 = k3 - 1;
-        }
-
-    }
-
-
-
-    if (flag) {
-
-
-        while (pom < 40) {
-            all_fields[pom] = new Tile(0, 0, 0, 0, 0, '', 0, 0);
-            pom = pom + 1;
-        }
-
-
-        for (var i = 0; i < 11; i++) {
-
-
-            all_fields.splice(pom1, 1, tileRowUp[i]);
-            pom1 = pom1 + 1;
-
-
-        }
-
-
-        for (var i = 1; i < 11; i++) {
-
-            all_fields.splice(pom1, 1, tileColRight[i]);
-            pom1 = pom1 + 1;
-
-        }
-        for (var i = 9; i >= 0; i--) {
-
-            all_fields.splice(pom1, 1, tileRowdown[i]);
-            pom1 = pom1 + 1;
-
-        }
-        for (var i = 9; i >= 1; i--) {
-
-            all_fields.splice(pom1, 1, tileColLeft[i]);
-            pom1 = pom1 + 1;
-
-        }
-
-        for (var i = 0; i < 40; i++) {
-            if (all_fields[i].TypeOfField == 4) {
-                for (var k = 0; k < 28; k++) {
-                    if (all_fields[i].id_Field == properites[k].field_Fk) {
-                        for (var c = 0; c < 9; c++) {
-                            if (properites[k].category_FK == categories[c].id_Category) {
-                                all_fields[i].Price = categories[c].entry_Value;
+        for (let i = 0; i < 40; i++) {
+            if (FieldArray[i].TypeOfField == 4) {
+                for (let k = 0; k < 28; k++) {
+                    if (FieldArray[i].id_Field == properites[k].field_Fk) {
+                        for (let c = 0; c < 9; c++) {
+                            if (properites[k].category_FK == CategoryArray[c].id_Category) {
+                                FieldArray[i].Price = CategoryArray[c].entry_Value;
                                 break;
 
                             }
@@ -285,8 +139,112 @@ function draw() {
                 }
             }
         }
+        for (let k = 0; k < 9; k++) {
+            let a = 0;
+            newtile[k].nameOfCategory = CategoryArray[k].nameOfCategory;
+            for (let z = 0; z < 28; z++) {
+                if (CategoryArray[k].id_Category == properites[z].category_FK) {
+                    for (let m = 0; m < 40; m++) {
+                        if (properites[z].field_Fk == FieldArray[m].id_Field)
+                            if (a <= 4) {
+                                newtile[k].property1[a] = FieldArray[m].nameOfField;
+                                a = a + 1;
+                            }
+
+
+                    }
+                }
+
+            }
+
+
+        }
+
+
+
+    }
+
+    for (var i = 0; i < 11; i++) {
+
+        var posX = map(i, 0, 11, 0, widthheight);
+
+
+        FieldArray[i] = new Tile(posX, 0, 80, 80, FieldArray[i].id_Field, FieldArray[i].nameOfField, FieldArray[i].TypeOfField, FieldArray[i].Price);
+    }
+
+    var k = 10;
+    for (var i = 0; i < 11; i++) {
+
+        var posX = map(i, 0, 11, 0, widthheight);
+        if (k < 21) {
+
+            FieldArray[k] = new Tile(widthheight - 80, posX, 80, 80, FieldArray[k].id_Field, FieldArray[k].nameOfField, FieldArray[k].TypeOfField, FieldArray[k].Price);
+            k = k + 1;
+
+        }
+    }
+    var k2 = 30;
+    for (var i = 0; i < 11; i++) {
+
+        var posX2 = map(i, 0, 11, 0, widthheight);
+        if (k2 >= 21) {
+
+            FieldArray[k2] = new Tile(posX2, widthheight - 80, 80, 80, FieldArray[k2].id_Field, FieldArray[k2].nameOfField, FieldArray[k2].TypeOfField, FieldArray[k2].Price);
+            k2 = k2 - 1;
+        }
+    }
+    var k3 = 39;
+    for (var i = 1; i < 11; i++) {
+
+        var posY = map(i, 0, 11, 0, widthheight);
+
+        if (k3 >= 30) {
+
+            FieldArray[k3] = new Tile(0, posY, 80, 80, FieldArray[k3].id_Field, FieldArray[k3].nameOfField, FieldArray[k3].TypeOfField, FieldArray[k3].Price);
+            k3 = k3 - 1;
+
+
+        }
+        var d2 = 0;
+        for (let i = 0; i < 2; i++) {
+
+            for (let z = 0; z < 2; z++) {
+                let x = (i + 1) * 20;
+                let y = (z + 2) * 20;
+                counters[d2] = new Counter(x, y, 10, 10, 0, '', 0, 0, 0);
+                d2 = d2 + 1;
+            }
+        }
+        for (let i = 0; i < 4; i++) {
+            counters[i].id_Player = players[i].id_Player;
+            counters[i].Name_Player = players[i].NameOfPlayer;
+            counters[i].amount_Of_Cash = players[i].AmountOfCash;
+            counters[i].Position = players[i].PositionPlayer;
+            counters[0].Color = 'RED';
+            counters[1].Color = 'BLUE';
+            counters[2].Color = 'YELLOW';
+            counters[3].Color = 'BLACK';
+
+        }
+
+
+        let bClick = document.getElementById("roll");
+        bClick.onclick = function () {
+
+            dice_roll();
+
+        }
+
+
+    }
+
+}
+
+
+function draw() {
+  
         for (let i = 0; i < 40; i++) {
-            all_fields[i].show();
+            FieldArray[i].show();
         }
         for (let k = 0; k < 9; k++) {
             newtile[k].show_tiles();
@@ -299,74 +257,13 @@ function draw() {
             counters[m].show_counter(counters[m].Color);
         }
 
-        flag = false;
-    }
-}
-
-let bClick = document.getElementById("roll");
-    bClick.onclick = function () {
-
-        dice_roll();
-
-    };
-
-var some;
-var url = "/Boards/Game";
-function dice_roll() {
-    let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 1;
-    let data = { numbers: generated_numbers, decision_value: 999 };
-    let url2;
     
-    httpPost(url, 'json', data, dataPosted, dataError, function () {
-        makesom(url2 = '/Boards/Json', json2 = loadJSON(url2), function () {
-            isready(some, function () {
-
-                for (var i = 0; i < 4; i++) {
-                    PlayerArray[i].id_Player = json2.player_list[i].id_player;
-                    PlayerArray[i].Name_Player = json2.player_list[i].name;
-                    PlayerArray[i].Position = json2.player_list[i].position;
-
-                }
-                for (var i = 0; i < 4; i++) {
-                    PlayerArray[i].show_player();
-                }
-            });
-        });
-    });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-function makesom() {
-    let url2 = '/Boards/Json';
-    json2 = loadJSON(url2, isready);
-}
-
-function isEmpty(obj) {
-    for (var prop in obj) {
-        if (obj.hasOwnProperty(prop))
-            return false;
-    }
-
-    return true;
-}
-
-
-
-
-// httpDo(url, 'POST', 'json', data, dataPosted, dataError);
 
 
 function dataPosted(result) {
+   
     console.log(result);
 }
 
@@ -374,19 +271,65 @@ function dataError(err) {
     console.log(err);
 }
 
-function get_data() {
+var response23;
+function dice_roll() {
+    let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 1;
+    let data = { numbers: generated_numbers, decision_value: 999 };
 
-    let url2 = '/Boards/Json';
-    json2 = loadJSON(url2, isready);
+    let url2 = '/Boards/Game';
+
+    httpPost(url2, 'json', data,dataPosted, function () {
+        
+        let url3 = '/Boards/Json';
+        httpGet(url3, 'json', function (response2) {
+
+            response23 = response2;
+            dipslayPlayers();
+            movePlayer(response23.board_list[0].current_player_index);
+        });
+
+    });
+
 }
 
 
-function isready() {
+function movePlayer(Current) {
+    let current_player = Current;
+    let url4 = '/Boards/Json';
+    httpGet(url4, 'json', function (response25) {
+ 
+        move_pl(current_player)
+    });
+   
+}
+function move_pl(cur) {
+    var player_ = cur;
+    //player_ = player_ + 1;
+    for (let i = 0; i < 4; i++) {
+        for (let z = 0; z < 40; z++) {
+            if (counters[i].id_Player == player_ && counters[i].Position == FieldArray[z].id_Field) {
+              
+                    counters[i].x = FieldArray[z].x + 10;
+                    counters[i].y = FieldArray[z].y + 10;
+                
+               
+                counters[i].show_counter(counters[i].Color);
 
+                break;
+            }
+        }
+        
+    }
+}
+
+
+
+
+function dipslayPlayers() {
     for (var i = 0; i < 4; i++) {
-        PlayerArray[i].id_Player = json2.player_list[i].id_player;
-        PlayerArray[i].Name_Player = json2.player_list[i].name;
-        PlayerArray[i].Position = json2.player_list[i].position;
+        PlayerArray[i].id_Player = response23.player_list[i].id_player;
+        PlayerArray[i].Name_Player = response23.player_list[i].name;
+        PlayerArray[i].Position = response23.player_list[i].position;
 
     }
     for (var i = 0; i < 4; i++) {

@@ -17,9 +17,12 @@
         textSize(10);
         textLeading(10);
 
+        fill(255);
         rect(this.x, this.y, this.lar, this.alt);
+        fill('BLACK');
         text(this.nameOfField, this.x + 10, this.y + 20, 70, 70);
-        text(this.Price, this.x + 50, this.y + 50);
+        if(this.Price!=0)text(this.Price, this.x + 50, this.y + 50);
+        
 
     }
 
