@@ -54,7 +54,10 @@ namespace Geekopoly
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseDefaultFiles();
             app.UseCookiePolicy();
+
+
 
             app.UseMvc(routes =>
             {

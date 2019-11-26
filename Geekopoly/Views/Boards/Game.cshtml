@@ -16,14 +16,10 @@
     <script src="~/js/category_class.js"></script>
     <script src="~/js/Counter.js"></script>
     <script src="~/js/Dice.js"></script>
-    
-
-
-
+    <script src="~/js/Decision.js"></script>
 </head>
 
 <body>
-
     <br />
     <p>
         <a class="text" asp-action="Create">Create New Board</a>
@@ -35,32 +31,5 @@
     <p>
         <a class="text" asp-action="Quit">Quit game</a>
     </p>
-    <div id="playerOnBoard">
-        <script>reloader();</script>
-        <div id="dice">
-            <input type="hidden" name="numbers" v-model="numbers">
-            <button id="reloader" v-on:click="sendToServer" onclick="reloader()">Roll dices</button>
-        </div>
-        <div id="content">
-            <p>Dices values: @Model.dices_value[0].numbers</p>
-            @foreach (var p in Model.player_list)
-            {
-                <p>@p.name - Position: @p.position - Money: @p.amount_of_cash - In Jail?: @p.is_in_jail </p>
-            }
-        </div>
-        <br />
-    </div>
-    <div id="modal">
-        <button @@click="modalAction" class="bg-teal text-black font-bold px-4 py-2 rounded-full">View Modal</button>
-
-        <div v-if="decision" class="bg-black absolute pin-t pin-l h-screen w-full flex items-center justify-center">
-            <div class="bg-white px-4 rounded w-1/3">
-                <h2 class="mb-2">Hello</h2>
-                <p>Message</p>
-                <button @@click="modalAction" class="mt-4 bg-teal text-black font-bold px-4 py-2 rounded-full">Close</button>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>

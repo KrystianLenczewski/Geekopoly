@@ -37,6 +37,14 @@ function preload() {
 }
 var m = 0;
 
+window.onload = function () {
+    let bClick = document.getElementById("roll");
+    bClick.onclick = function () {
+
+        dice_roll();
+
+    }
+}
 
 function setup() {
     createCanvas(1800, 1800);
@@ -226,38 +234,26 @@ function setup() {
             counters[3].Color = 'BLACK';
 
         }
-
-
-        let bClick = document.getElementById("roll");
-        bClick.onclick = function () {
-
-            dice_roll();
-
-        }
-
-
     }
-
 }
+
 
 
 function draw() {
   
-        for (let i = 0; i < 40; i++) {
-            FieldArray[i].show();
-        }
-        for (let k = 0; k < 9; k++) {
-            newtile[k].show_tiles();
-        }
-        for (let j = 0; j < 4; j++) {
-            PlayerArray[j].show_player();
-        }
-        for (let m = 0; m < 4; m++) {
+    for (let i = 0; i < 40; i++) {
+        FieldArray[i].show();
+    }
+    for (let k = 0; k < 9; k++) {
+        newtile[k].show_tiles();
+    }
+    for (let j = 0; j < 4; j++) {
+        PlayerArray[j].show_player();
+    }
+    for (let m = 0; m < 4; m++) {
 
-            counters[m].show_counter(counters[m].Color);
-        }
-
-    
+        counters[m].show_counter(counters[m].Color);
+    }
 }
 
 
@@ -274,36 +270,78 @@ function dataError(err) {
 var response23;
 function dice_roll() {
     let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 1;
-    let data = { numbers: generated_numbers, decision_value: 999 };
+    let json_data = { numbers: generated_numbers, decision_value: 999 };
 
     let url2 = '/Boards/Game';
 
-    httpPost(url2, 'json', data,dataPosted, function () {
-        
-        let url3 = '/Boards/Json';
-        httpGet(url3, 'json', function (response2) {
+    //httpPost(url2, 'json', json_data, function () {
 
-            response23 = response2;
-            dipslayPlayers();
-            movePlayer(response23.board_list[0].current_player_index);
-        });
+    //    let url3 = '/Boards/Json';
+    //    httpGet(url3, function (response2) {
+
+    //        response23 = response2;
+    //        dipslayPlayers();
+    //        movePlayer(response23.board_list[0].current_player_index);
+    //    });
+
+    //}, dataPosted);
+
+    //fetch(url2, {
+    //    method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/json'
+    //    },
+    //    body: JSON.stringify(data)
+    //})
+    //    .then(() => function () {
+    //        httpGet('/Boards/Json', 'json', function (response) {
+    //            get_response = response;
+    //            dipslayPlayers();
+    //            movePlayer(get_response.board_list[0].current_player_index);
+    //        });
+    //    });
+
+    $.ajax({
+        type: "POST",
+        url: "/Boards/Game",
+        data: JSON.stringify(json_data),
+        contentType: "application/json",
+        success: function () {
+            let url3 = '/Boards/Json';
+            httpGet(url3, 'json', function (response) {
+                response23 = response;
+                dipslayPlayers();
+                movePlayer(response23.board_list[0].current_player_index);
+            });
+        },
+        error: function (data) {
+            console.log('Error: ' + data);
+        }
 
     });
-
 }
-
-
+var object_from_json;
 function movePlayer(Current) {
     let current_player = Current;
     let url4 = '/Boards/Json';
     httpGet(url4, 'json', function (response25) {
- 
-        move_pl(current_player)
+        object_from_json = response25;
+        move_pl(current_player);
     });
    
 }
 function move_pl(cur) {
+
+
+    for (let i = 0; i < 4; i++) {
+        counters[i].Position = object_from_json.player_list[i].position
+    }
+
+
     var player_ = cur;
+    if (player_ == 0) {
+        player_ = 4;
+    }
     //player_ = player_ + 1;
     for (let i = 0; i < 4; i++) {
         for (let z = 0; z < 40; z++) {
