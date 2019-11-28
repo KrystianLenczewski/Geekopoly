@@ -17,7 +17,7 @@
 
         if (pom == 'RED') {
             fill('RED');
-            rect(this.x, this.y, this.alt, this.lar);
+            rect(this.x-5, this.y-5, this.alt, this.lar);
         }
         if (pom == 'BLUE') {
             fill('BLUE');
@@ -25,11 +25,11 @@
         }
         if (pom == 'YELLOW') {
             fill('YELLOW');
-            rect(this.x, this.y, this.alt, this.lar);
+            rect(this.x+20, this.y+5, this.alt, this.lar);
         }
         if (pom == 'BLACK') {
             fill('BLACK');
-            rect(this.x, this.y, this.alt, this.lar);
+            rect(this.x+5, this.y+7, this.alt, this.lar);
         }
 
     }
