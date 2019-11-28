@@ -22,10 +22,10 @@ namespace Geekopoly.Controllers
             List<Field> fields = _context.Fields.ToList();
             List<Property> properties = _context.Properties.ToList();
             List<Board> boards = _context.Boards.ToList();
-            properties = _context.Properties.ToList();
             List<Category> categories = _context.Categories.ToList();
             List<Player> players = _context.Players.ToList();
-           
+
+            properties = _context.Properties.ToList();
             categories = _context.Categories.ToList();
             fields = _context.Fields.ToList();
             players = _context.Players.ToList();

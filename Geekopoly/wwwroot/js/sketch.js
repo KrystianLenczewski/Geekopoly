@@ -5,7 +5,17 @@ window.fields = [];
 window.properites = [];
 window.categories = [];
 var newtile = [];
+var popup_open = false;
 window.players = [];
+
+var checkbox1;
+var checkbox2;
+var checkbox3;
+var is_decision_made = false;
+
+var text_box;
+var popup_background;
+
 for (var i = 0; i < 40; i++) {
     window.fields[i] = { id_Field: 0, nameOfField2: ' ', TypeOfField: 0, Price: 0 };
 }
@@ -27,7 +37,6 @@ var CategoryArray = [];
 var counters = [];
 
 function preload() {
-
     let url = '/Boards/Json';
     httpGet(url, 'json', function (response) {
         flag = true;
@@ -43,13 +52,25 @@ window.onload = function () {
 
         dice_roll();
 
-    }
+    };
+    //button1 = document.getElementById("button1");
+    //button1.onclick = send_decision;
+    //button2 = document.getElementById("button2");
+    //button2.onclick = send_decision;
+    //button3 = document.getElementById("button2");
+    //button3.onclick = send_decision;
 }
 
 function setup() {
     createCanvas(1800, 1800);
     background(255);
 
+    //button1 = createButton('');
+    //button1.id('button1');
+    //button2 = createButton('');
+    //button2.id('button2');
+    //button3 = createButton('');
+    //button3.id('button3');
 
     for (var i = 0; i < 3; i++) {
 
@@ -77,6 +98,7 @@ function setup() {
     for (let i = 0; i < 9; i++) {
         CategoryArray[i] = new category_class('', 0, 0, 150, 150, '', 0, 0, 0);
     }
+
 
     if (flag) {
         for (let i = 0; i < 40; i++) {
@@ -240,26 +262,28 @@ function setup() {
 
 
 function draw() {
-  
-    for (let i = 0; i < 40; i++) {
-        FieldArray[i].show();
-    }
-    for (let k = 0; k < 9; k++) {
-        newtile[k].show_tiles();
-    }
-    for (let j = 0; j < 4; j++) {
-        PlayerArray[j].show_player();
-    }
-    for (let m = 0; m < 4; m++) {
 
-        counters[m].show_counter(counters[m].Color);
+    if (!popup_open) {
+        for (let i = 0; i < 40; i++) {
+            FieldArray[i].show();
+        }
+        for (let k = 0; k < 9; k++) {
+            newtile[k].show_tiles();
+        }
+        for (let j = 0; j < 4; j++) {
+            PlayerArray[j].show_player();
+        }
+        for (let m = 0; m < 4; m++) {
+
+            counters[m].show_counter(counters[m].Color);
+        }
     }
 }
 
 
 
 function dataPosted(result) {
-   
+
     console.log(result);
 }
 
@@ -268,6 +292,7 @@ function dataError(err) {
 }
 
 var response23;
+var promise;
 function dice_roll() {
     let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 1;
     let json_data = { numbers: generated_numbers, decision_value: 999 };
@@ -309,9 +334,19 @@ function dice_roll() {
         success: function () {
             let url3 = '/Boards/Json';
             httpGet(url3, 'json', function (response) {
-                response23 = response;
-                dipslayPlayers();
-                movePlayer(response23.board_list[0].current_player_index);
+                promise = new Promise(function (resolve, reject) {
+                    response23 = response;
+                    if (response23 === response) {
+                        resolve();
+                    }
+                    else {
+                        reject();
+                    }
+                });
+                promise.then(move_and_generate_decision)
+                    .catch(function () {
+                        console.log('Error in promise');
+                    });
             });
         },
         error: function (data) {
@@ -321,14 +356,21 @@ function dice_roll() {
     });
 }
 
+function move_and_generate_decision() {
+    dipslayPlayers();
+    let current_player_index = response23.board_list[0].current_player_index;
+    movePlayer(current_player_index);
+    generate_decision_popup(response23.player_list[current_player_index + 1]);
+}
+
 function movePlayer(Current) {
     let current_player = Current;
     let url4 = '/Boards/Json';
     httpGet(url4, 'json', function (response25) {
- 
+
         move_pl(current_player);
     });
-   
+
 }
 function move_pl(cur) {
     var player_ = cur;
@@ -336,17 +378,17 @@ function move_pl(cur) {
     for (let i = 0; i < 4; i++) {
         for (let z = 0; z < 40; z++) {
             if (counters[i].id_Player == player_ && counters[i].Position == FieldArray[z].id_Field) {
-              
-                    counters[i].x = FieldArray[z].x + 10;
-                    counters[i].y = FieldArray[z].y + 10;
-                
-               
+
+                counters[i].x = FieldArray[z].x + 10;
+                counters[i].y = FieldArray[z].y + 10;
+
+
                 counters[i].show_counter(counters[i].Color);
 
                 break;
             }
         }
-        
+
     }
 }
 
@@ -362,5 +404,51 @@ function dipslayPlayers() {
     }
     for (var i = 0; i < 4; i++) {
         PlayerArray[i].show_player();
+    }
+}
+
+function generate_decision_popup(player) {
+    popup_open = true;
+    let current_player = player;
+    let current_field = FieldArray[player.position];
+
+
+    let decision = new Decision(current_field, current_player);
+    decision.make_decision();
+
+
+
+}
+
+function send_decision(amount_of_checkboxes) {
+
+    switch (amount_of_checkboxes) {
+        case 1:
+            if (elt.checked()) {
+                document.getElementById("checkbox1").outerHTML = "";
+                popup_background.remove();
+                is_decision_made = true;
+            }
+            else {
+                console.log('Error');
+            }
+            break;
+        case 2:
+            if (this.checked()) {
+                document.getElementById("checkbox1").outerHTML = "";
+                document.getElementById("checkbox2").outerHTML = "";
+                popup_background.remove();
+                is_decision_made = true;
+            }
+            else {
+                console.log('Error');
+            }
+            break;
+        case 3:
+            document.getElementById("checkbox1").outerHTML = "";
+            document.getElementById("checkbox2").outerHTML = "";
+            document.getElementById("checkbox3").outerHTML = "";
+            popup_background.remove();
+            break;
     }
 }
