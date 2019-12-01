@@ -24,6 +24,12 @@ class Decision {
         let property;
         switch (this.field_type) {
 
+            case 0:
+                decision = 7;
+                current_mysterious_card = Math.floor(Math.random() * mysterious_cards.length);
+                let current_mysterious_card_object = mysterious_cards[current_mysterious_card];
+                popup_background.html("   " + current_mysterious_card_object.Description, true);
+                break;
             case 1:
                 decision = 6;
                 break;

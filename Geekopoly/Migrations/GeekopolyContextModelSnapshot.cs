@@ -113,11 +113,11 @@ namespace Geekopoly.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("FieldFK");
+                    b.Property<string>("description");
+
+                    b.Property<int>("reward");
 
                     b.HasKey("id_mysterious_card");
-
-                    b.HasIndex("FieldFK");
 
                     b.ToTable("MysteriousCards");
                 });
@@ -206,14 +206,6 @@ namespace Geekopoly.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Geekopoly.Models.MysteriousCard", b =>
-                {
-                    b.HasOne("Geekopoly.Models.Field", "field")
-                        .WithMany()
-                        .HasForeignKey("FieldFK")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Geekopoly.Models.Prison", b =>
                 {
                     b.HasOne("Geekopoly.Models.Field", "field")
@@ -230,7 +222,7 @@ namespace Geekopoly.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Geekopoly.Models.Player", "owner")
-                        .WithMany("Properties")
+                        .WithMany()
                         .HasForeignKey("ownerFK");
                 });
 

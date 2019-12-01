@@ -28,6 +28,7 @@ namespace Geekopoly.Controllers
             List<Board> boards = _context.Boards.ToList();
             List<Category> categories = _context.Categories.ToList();
             List<Player> players = _context.Players.ToList();
+            List<MysteriousCard> mysteriousCards = _context.MysteriousCards.ToList();
 
             properties = _context.Properties.ToList();
             categories = _context.Categories.ToList();
@@ -40,20 +41,21 @@ namespace Geekopoly.Controllers
             jsonmodel.property_list = properties;
             jsonmodel.player_list = players;
             jsonmodel.board_list = boards;
+            jsonmodel.mysterious_card_list = mysteriousCards;
             return Json(jsonmodel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(player);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(player);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(player);
+        //}
 
         public IActionResult Game()
         {
@@ -99,6 +101,7 @@ namespace Geekopoly.Controllers
             List<Category> category = _context.Categories.ToList();
             List<Decision> decision = _context.Decisions.ToList();
             List<Start> start = _context.Starts.ToList();
+            List<MysteriousCard> mysteriouscard = _context.MysteriousCards.ToList();
 
             var selected_board = (from b in board
                                   select b
@@ -158,15 +161,14 @@ namespace Geekopoly.Controllers
                     }
                 }
 
-                foreach (Player p in current_player)
-                {
-                    int current_position = p.position;
+                
+                    int current_position = player[current_player_index].position;
                     if (((current_position + dices_value) % 40) <= current_position)
                     {
-                        p.amount_of_cash += 200;
+                    player[current_player_index].amount_of_cash += 200;
                     }
-                    p.position = (current_position + dices_value) % 40;
-                }
+                player[current_player_index].position = (current_position + dices_value) % 40;
+                
                 player[current_player_index].field_action();
 
             }
@@ -302,9 +304,16 @@ namespace Geekopoly.Controllers
                         
                         break;
                     case 6:
-                        foreach (Player p in current_player)
+                        if (current_player_index != 0) current_player_index = current_player_index - 1;
+                        else current_player_index = 3;
+
+                        var current_field_id = player[current_player_index].position;
+                        if(current_field_id==0)
                         {
-                            var current_field_id = p.position;
+                            break;
+                        }
+                        else
+                        {
                             var current_reward_field = new Start();
                             foreach (Start s in start)
                             {
@@ -313,9 +322,27 @@ namespace Geekopoly.Controllers
                                     current_reward_field = s;
                                 }
                             }
-                            p.amount_of_cash += current_reward_field.reward;
-                            
+                        player[current_player_index].amount_of_cash += current_reward_field.reward;
                         }
+                            
+                            
+                        
+                        break;
+                    case 7:
+                        if (current_player_index != 0) current_player_index = current_player_index - 1;
+                        else current_player_index = 3;
+                        int current_mysterious_card_id = return_model.mysterious_card_number;
+                        var current_mysterious_card = new MysteriousCard();
+                        foreach (MysteriousCard m in mysteriouscard)
+                        {
+                            if (m.id_mysterious_card == current_mysterious_card_id)
+                            {
+                                current_mysterious_card = mysteriouscard[current_mysterious_card_id];
+                            }
+                        }
+
+                        player[current_player_index].amount_of_cash += current_mysterious_card.reward;
+
                         break;
 
                 }
@@ -348,7 +375,7 @@ namespace Geekopoly.Controllers
             
           
            
-            return RedirectToAction("Index", "Players", new { area = "Admin" });
+            return RedirectToAction("Index", "Players");
         }
 
 

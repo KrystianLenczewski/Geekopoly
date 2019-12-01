@@ -13,5 +13,6 @@ namespace Geekopoly.Models
         public List<Category> category_list { get; set; }
         public List<Player> player_list { get; set; }
         public List<Board> board_list { get; set; }
+        public List<MysteriousCard> mysterious_card_list { get; set; }
     }
 }

@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Geekopoly.Migrations
 {
     [DbContext(typeof(GeekopolyContext))]
-    [Migration("20191130215006_init")]
-    partial class init
+    [Migration("20191201190637_myMigration")]
+    partial class myMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -224,7 +224,7 @@ namespace Geekopoly.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Geekopoly.Models.Player", "owner")
-                        .WithMany("Properties")
+                        .WithMany()
                         .HasForeignKey("ownerFK");
                 });
 
