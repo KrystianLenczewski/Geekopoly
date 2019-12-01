@@ -10,7 +10,7 @@ using Geekopoly.Models;
 namespace Geekopoly.Data
 {
     public class PlayersController : Controller
-    {   
+    {
         private readonly GeekopolyContext _context;
 
         public PlayersController(GeekopolyContext context)
@@ -21,49 +21,15 @@ namespace Geekopoly.Data
         // GET: Players
         public async Task<IActionResult> Index()
         {
-           
-           
+
+
             return View(await _context.Players.ToListAsync());
         }
-
-        // GET: Players/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> GoToBoard()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var player = await _context.Players
-                .FirstOrDefaultAsync(m => m.id_player == id);
-            if (player == null)
-            {
-                return NotFound();
-            }
 
-            return View(player);
-        }
-
-        // GET: Players/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Players/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(player);
+            return RedirectToAction("Index", "Boards");
         }
 
         // GET: Players/Edit/5
@@ -118,34 +84,7 @@ namespace Geekopoly.Data
             return View(player);
         }
 
-        // GET: Players/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var player = await _context.Players
-                .FirstOrDefaultAsync(m => m.id_player == id);
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            return View(player);
-        }
-
-        // POST: Players/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var player = await _context.Players.FindAsync(id);
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool PlayerExists(int id)
         {

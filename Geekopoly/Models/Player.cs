@@ -19,7 +19,7 @@ namespace Geekopoly.Models
         public int amount_of_cash { get; set; } = initial_player_money;
         public int position { get; set; }
         public bool is_in_jail { get; set; } = false;
-        public List<Property> Properties { get; set; } = new List<Property>();
+        //public List<Property> Properties { get; set; } = new List<Property>();
 
 
         public Player(int id_player, string name)
