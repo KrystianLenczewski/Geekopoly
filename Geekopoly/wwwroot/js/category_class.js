@@ -13,10 +13,6 @@ class category_class {
         this.id_Category = id_Category;
         this.entry_Value = entry_Value;
         this.upgrade_Cost = upgrade_Cost;
-
-        
-
-
     }
    
   
@@ -32,8 +28,6 @@ class category_class {
         text(this.property1[1], this.x + 10, this.y + 40);
         text(this.property1[2], this.x + 10, this.y + 50);
         text(this.property1[3], this.x + 10, this.y + 60);
-       
-       
     }
 
 }

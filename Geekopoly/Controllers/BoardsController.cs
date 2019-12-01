@@ -91,7 +91,19 @@ namespace Geekopoly.Controllers
             List<Player> player = _context.Players.ToList();
             List<Board> board = _context.Boards.ToList();
             List<Field> field = _context.Fields.ToList();
+            List<Property> property = _context.Properties.ToList();
+            List<Category> category = _context.Categories.ToList();
             List<Decision> decision = _context.Decisions.ToList();
+            List<Start> start = _context.Starts.ToList();
+
+            var selected_board = (from b in board
+                                  select b
+                     );
+
+            foreach(Board b in selected_board)
+            {
+                current_player_index = b.current_player_index;
+            }
 
             var current_decision = (from d in decision
                                     select d);
@@ -101,66 +113,214 @@ namespace Geekopoly.Controllers
                 d.decision_value = value_of_decision;
             }
 
-            var current_dices = (from d in dices
-                                 select d);
-
-            foreach (Dice d in current_dices)
-            {
-                d.numbers = dices_value;
-            }
-
-            var selected_board = (from b in board
-                                  select b
-                                 );
-
-            foreach (Board b in board)
-            {
-                current_player_index = b.current_player_index;
-                if (player[current_player_index].is_in_jail == true)
-                {
-                    int next_index = player[current_player_index].find_next_free_player_id(current_player_index + 1) - 1;
-                    if (next_index >= 0)
-                    {
-                        player[current_player_index].is_in_jail = false;
-                        current_player_index = next_index;
-
-                    }
-                    else
-                    {
-                        foreach (Player p in player)
-                        {
-                            p.is_in_jail = false;
-                        }
-                        b.current_player_index = 0;
-                        current_player_index = 0;
-                    }
-                }
-            }
-
-
-
             var current_player = (from p in player
                                   where p.id_player == current_player_index + 1
                                   select p
-                               );
-            foreach (Player p in current_player)
+                   );
+
+            if (value_of_decision < 0)
             {
-                int current_position = p.position;
-                if (((current_position + dices_value) % 40) <= current_position)
+
+                var current_dices = (from d in dices
+                                     select d);
+
+                foreach (Dice d in current_dices)
                 {
-                    p.amount_of_cash += 200;
+                    d.numbers = dices_value;
                 }
-                p.position = (current_position + dices_value) % 40;
+
+
+                foreach (Board b in board)
+                {
+                    current_player_index = b.current_player_index;
+                    if (player[current_player_index].is_in_jail == true)
+                    {
+                        int next_index = player[current_player_index].find_next_free_player_id(current_player_index + 1) - 1;
+                        if (next_index >= 0)
+                        {
+                            player[current_player_index].is_in_jail = false;
+                            current_player_index = next_index;
+
+                        }
+                        else
+                        {
+                            foreach (Player p in player)
+                            {
+                                p.is_in_jail = false;
+                            }
+                            b.current_player_index = 0;
+                            current_player_index = 0;
+                        }
+                    }
+                }
+
+                foreach (Player p in current_player)
+                {
+                    int current_position = p.position;
+                    if (((current_position + dices_value) % 40) <= current_position)
+                    {
+                        p.amount_of_cash += 200;
+                    }
+                    p.position = (current_position + dices_value) % 40;
+                }
+                player[current_player_index].field_action();
+
             }
 
-            player[current_player_index].field_action();
 
-            foreach (Board b in board)
+
+
+            if (dices_value < 0)
             {
-                b.current_player_index = (current_player_index + 1) % 4;
+                switch (value_of_decision) {
+                    case 1:
+                        foreach (Player p in current_player)
+                        {
+                            var field_id = p.position;
+                            var current_property = new Property();
+                            var current_category = new Category();
+                            foreach (Property pr in property)
+                            {
+                                if (pr.fieldFK == field_id)
+                                {
+                                    current_property = pr;
+                                }
+                            }
+
+                            foreach (Category c in category)
+                            {
+                                if (c.id_category == current_property.categoryFK)
+                                {
+                                    current_category = c;
+                                }
+                            }
+                            if (current_property.ownerFK == null)
+                            {
+                                if (p.amount_of_cash < current_category.entry_value)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    p.amount_of_cash -= current_category.entry_value;
+                                    current_property.owner = p;
+                                    current_property.ownerFK = p.id_player;
+                                    current_property.type_of_property = 1;
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
+                        foreach (Player p in current_player)
+                        {
+                            var field_id = p.position;
+                            var current_property = new Property();
+                            var current_category = new Category();
+                            foreach (Property pr in property)
+                            {
+                                if (pr.fieldFK == field_id)
+                                {
+                                    current_property = pr;
+                                }
+                            }
+
+                            foreach (Category c in category)
+                            {
+                                if (c.id_category == current_property.categoryFK)
+                                {
+                                    current_category = c;
+                                }
+                            }
+                            if (current_property.ownerFK == p.id_player)
+                            {
+                                if (p.amount_of_cash < current_category.entry_value)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    p.amount_of_cash -= current_category.entry_value;
+                                    current_property.type_of_property += 1;
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        foreach (Player p in current_player)
+                        {
+                            var field_id = p.position;
+                            var enemy_player = new Player();
+                            var current_property = new Property();
+                            var current_category = new Category();
+                            foreach (Property pr in property)
+                            {
+                                if (pr.fieldFK == field_id)
+                                {
+                                    current_property = pr;
+                                }
+                            }
+
+                            foreach (Category c in category)
+                            {
+                                if (c.id_category == current_property.categoryFK)
+                                {
+                                    current_category = c;
+                                }
+                            }
+
+                            foreach(Player pl in current_player)
+                            {
+                                if(pl.id_player == current_property.ownerFK)
+                                {
+                                    enemy_player = pl;
+                                }
+                            }
+
+                            int penalty = current_category.entry_value + ((current_category.upgrade_cost*(current_property.type_of_property.Value - 1)) - 50);
+
+                            p.amount_of_cash -= penalty;
+                            enemy_player.amount_of_cash += penalty;
+                        }
+                        break;
+                    case 4:
+                        foreach (Player p in current_player)
+                        {
+                            p.is_in_jail = false;
+                        }
+                        break;
+                    case 5:
+                        foreach (Player p in current_player)
+                        {
+                            p.amount_of_cash -= 100;
+                            p.is_in_jail = false;
+                        }
+                        break;
+                    case 6:
+                        foreach (Player p in current_player)
+                        {
+                            var current_field_id = p.position;
+                            var current_reward_field = new Start();
+                            foreach (Start s in start)
+                            {
+                                if (s.fieldFK == current_field_id)
+                                {
+                                    current_reward_field = s;
+                                }
+                            }
+                            p.amount_of_cash += current_reward_field.reward;
+                            
+                        }
+                        break;
+
+                }
+
+
+                foreach (Board b in board)
+                {
+                    b.current_player_index = (current_player_index + 1) % 4;
+                }
+
             }
-
-
 
             try
             {
