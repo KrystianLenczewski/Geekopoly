@@ -88,7 +88,7 @@ window.onload = function () {
         else {
             decision = 0;
         }
-       // popup_background.remove();
+       popup_background.remove();
         let json_data = { numbers: -1, decision_value: decision };
         $.ajax({
             type: "POST",
