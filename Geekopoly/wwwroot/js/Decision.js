@@ -29,6 +29,7 @@ class Decision {
                 current_mysterious_card = Math.floor(Math.random() * mysterious_cards.length);
                 let current_mysterious_card_object = mysterious_cards[current_mysterious_card];
                 popup_background.html("   " + current_mysterious_card_object.Description, true);
+                document.getElementById("ok").style.background = '#32CD32';
                 break;
             case 1:
                 decision = 6;
