@@ -8,7 +8,7 @@ var newtile = [];
 var popup_open = false;
 window.players = [];
 window.mysterious_cards = [];
-//Comment
+
 var checkbox1;
 var checkbox2;
 var checkbox3;
