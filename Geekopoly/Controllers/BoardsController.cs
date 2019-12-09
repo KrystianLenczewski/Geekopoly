@@ -44,18 +44,7 @@ namespace Geekopoly.Controllers
             jsonmodel.mysterious_card_list = mysteriousCards;
             return Json(jsonmodel);
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(player);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(player);
-        //}
+    
 
         public IActionResult Game()
         {
@@ -78,12 +67,7 @@ namespace Geekopoly.Controllers
             return View(game);
         }
 
-        //[HttpPost]
-        //public IActionResult Game(int value)
-        //{
-        //    var received_value = value;
-        //    return View();
-        //}
+      
 
         [HttpPost]
         public IActionResult Game([FromBody] RollingDicesReturnModel return_model)
@@ -102,6 +86,7 @@ namespace Geekopoly.Controllers
             List<Decision> decision = _context.Decisions.ToList();
             List<Start> start = _context.Starts.ToList();
             List<MysteriousCard> mysteriouscard = _context.MysteriousCards.ToList();
+            List<Property> properties = _context.Properties.ToList();
 
             var selected_board = (from b in board
                                   select b
@@ -379,45 +364,13 @@ namespace Geekopoly.Controllers
         }
 
 
-        public IActionResult NewGame()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewGame([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(player);
-        }
+       
+        
         // GET: Boards
         public async Task<IActionResult> Index()
         {
 
             return RedirectToAction("Edit", new { id = 1 });
-        }
-
-        // GET: Boards/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var board = await _context.Boards
-                .FirstOrDefaultAsync(m => m.id_board == id);
-            if (board == null)
-            {
-                return NotFound();
-            }
-
-            return View(board);
         }
 
         // GET: Boards/Create
@@ -447,6 +400,16 @@ namespace Geekopoly.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+
+
+            for (var i = 0; i < 28; i++)
+            {
+                var boardd = await _context.Properties.FindAsync(i);
+                boardd.type_of_property = null;
+                boardd.ownerFK = null;
+
+                _context.Update(boardd);
+            }
             if (id == null)
             {
                 return NotFound();
