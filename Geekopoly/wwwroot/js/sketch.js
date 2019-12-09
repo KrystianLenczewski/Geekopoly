@@ -158,7 +158,6 @@ window.onload = function () {
     let okButton = document.getElementById("ok");
     okButton.onclick = function () {
         popup_background.remove();
-        document.getElementById("ok").style.background = '#FFFFFF';
         if (decision === 3 || decision === 6 || decision === 7) {
             let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
             $.ajax({
