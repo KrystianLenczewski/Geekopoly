@@ -9,5 +9,6 @@ namespace Geekopoly.Models
     {
         public int numbers { get; set; }
         public int decision_value { get; set; }
+        public int mysterious_card_number { get; set; }
     }
 }

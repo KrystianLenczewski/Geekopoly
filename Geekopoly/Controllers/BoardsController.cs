@@ -28,6 +28,7 @@ namespace Geekopoly.Controllers
             List<Board> boards = _context.Boards.ToList();
             List<Category> categories = _context.Categories.ToList();
             List<Player> players = _context.Players.ToList();
+            List<MysteriousCard> mysteriousCards = _context.MysteriousCards.ToList();
 
             properties = _context.Properties.ToList();
             categories = _context.Categories.ToList();
@@ -40,20 +41,21 @@ namespace Geekopoly.Controllers
             jsonmodel.property_list = properties;
             jsonmodel.player_list = players;
             jsonmodel.board_list = boards;
+            jsonmodel.mysterious_card_list = mysteriousCards;
             return Json(jsonmodel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(player);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("id_player,name,amount_of_cash,position,is_in_jail")] Player player)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(player);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(player);
+        //}
 
         public IActionResult Game()
         {
@@ -99,7 +101,7 @@ namespace Geekopoly.Controllers
             List<Category> category = _context.Categories.ToList();
             List<Decision> decision = _context.Decisions.ToList();
             List<Start> start = _context.Starts.ToList();
-            List<Property> properties = _context.Properties.ToList();
+            List<MysteriousCard> mysteriouscard = _context.MysteriousCards.ToList();
 
             var selected_board = (from b in board
                                   select b
@@ -160,14 +162,14 @@ namespace Geekopoly.Controllers
                 }
 
                 
-                int current_position = player[current_player_index].position;
+                    int current_position = player[current_player_index].position;
                     if (((current_position + dices_value) % 40) <= current_position)
                     {
                     player[current_player_index].amount_of_cash += 200;
                     }
                 player[current_player_index].position = (current_position + dices_value) % 40;
                 
-               player[current_player_index] .field_action();
+                player[current_player_index].field_action();
 
             }
 
@@ -304,8 +306,9 @@ namespace Geekopoly.Controllers
                     case 6:
                         if (current_player_index != 0) current_player_index = current_player_index - 1;
                         else current_player_index = 3;
+
                         var current_field_id = player[current_player_index].position;
-                        if (current_field_id == 0)
+                        if(current_field_id==0)
                         {
                             break;
                         }
@@ -319,10 +322,27 @@ namespace Geekopoly.Controllers
                                     current_reward_field = s;
                                 }
                             }
-                            player[current_player_index].amount_of_cash += current_reward_field.reward;
+                        player[current_player_index].amount_of_cash += current_reward_field.reward;
                         }
                             
+                            
                         
+                        break;
+                    case 7:
+                        if (current_player_index != 0) current_player_index = current_player_index - 1;
+                        else current_player_index = 3;
+                        int current_mysterious_card_id = return_model.mysterious_card_number;
+                        var current_mysterious_card = new MysteriousCard();
+                        foreach (MysteriousCard m in mysteriouscard)
+                        {
+                            if (m.id_mysterious_card == current_mysterious_card_id)
+                            {
+                                current_mysterious_card = mysteriouscard[current_mysterious_card_id];
+                            }
+                        }
+
+                        player[current_player_index].amount_of_cash += current_mysterious_card.reward;
+
                         break;
 
                 }
@@ -355,7 +375,7 @@ namespace Geekopoly.Controllers
             
           
            
-            return RedirectToAction("Index", "Players", new { area = "Admin" });
+            return RedirectToAction("Index", "Players");
         }
 
 
@@ -427,16 +447,6 @@ namespace Geekopoly.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-           // List<Property> propertyy = _context.Properties.ToList();
-            for(var i=0;i<28;i++)
-            {
-                var boardd = await _context.Properties.FindAsync(i);
-                boardd.type_of_property = null;
-                boardd.ownerFK = null;
-
-                _context.Update(boardd);
-            }
-          
             if (id == null)
             {
                 return NotFound();
@@ -444,19 +454,11 @@ namespace Geekopoly.Controllers
 
             var board = await _context.Boards.FindAsync(id);
             board.current_player_index = 0;
-
-
-
             _context.Update(board);
-            
             await _context.SaveChangesAsync();
             return RedirectToAction("Game");
 
         }
-
-
-
-
 
         // POST: Boards/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

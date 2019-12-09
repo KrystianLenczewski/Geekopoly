@@ -7,6 +7,7 @@ window.categories = [];
 var newtile = [];
 var popup_open = false;
 window.players = [];
+window.mysterious_cards = [];
 
 var checkbox1;
 var checkbox2;
@@ -25,9 +26,11 @@ for (i = 0; i < 28; i++) {
 for (i = 0; i < 9; i++) {
     window.categories[i] = { id_Category: 0, Name: '', entry_Value: 0, upgrade_Cost: 0 };
 }
-
 for (i = 0; i < 4; i++) {
     window.players[i] = { id_Player: 0, NameOfPlayer: '', AmountOfCash: 0, PositionPlayer: 0 };
+}
+for (i = 0; i < 10; i++) {
+    window.mysterious_cards[i] = { id_MysteriousCard: 0, Description: '', Reward: 0 };
 }
 
 var widthheight = 880;
@@ -39,6 +42,7 @@ var counters = [];
 var current_player;
 var current_field;
 var decision;
+var current_mysterious_card;
 
 function preload() {
     let url = '/Boards/Json';
@@ -89,7 +93,7 @@ window.onload = function () {
             decision = 0;
         }
        popup_background.remove();
-        let json_data = { numbers: -1, decision_value: decision };
+        let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
         $.ajax({
             type: "POST",
             url: "/Boards/Game",
@@ -135,7 +139,7 @@ window.onload = function () {
             decision: 0;
         }
         popup_background.remove();
-        let json_data = { numbers: -1, decision_value: decision };
+        let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
         $.ajax({
             type: "POST",
             url: "/Boards/Game",
@@ -154,8 +158,8 @@ window.onload = function () {
     let okButton = document.getElementById("ok");
     okButton.onclick = function () {
         popup_background.remove();
-        if (decision === 3 || decision === 6) {
-            let json_data = { numbers: -1, decision_value: decision };
+        if (decision === 3 || decision === 6 || decision === 7) {
+            let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
             $.ajax({
                 type: "POST",
                 url: "/Boards/Game",
@@ -174,6 +178,7 @@ window.onload = function () {
 
         let luckySixButton = document.getElementById("lucky6");
         luckySixButton.onclick = function () {
+            popup_background.remove();
             if ((Math.floor(Math.random() * 12) + 2) === 12) {
                 decision = 4;
             }
@@ -181,7 +186,7 @@ window.onload = function () {
                 decision = 0;
             }
 
-            let json_data = { numbers: -1, decision_value: decision };
+            let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
             $.ajax({
                 type: "POST",
                 url: "/Boards/Game",
@@ -200,9 +205,10 @@ window.onload = function () {
         };
         let payForFreedom = document.getElementById("pay_prison_penalty");
         payForFreedom.onclick = function () {
+            popup_background.remove();
             decision = 5;
 
-            let json_data = { numbers: -1, decision_value: decision };
+            let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
             $.ajax({
                 type: "POST",
                 url: "/Boards/Game",
@@ -359,7 +365,7 @@ window.onload = function () {
     var promise;
     function dice_roll() {
         let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 2;
-        let json_data = { numbers: generated_numbers, decision_value: -1 };
+        let json_data = { numbers: generated_numbers, decision_value: -1, mysterious_card_number: current_mysterious_card  };
 
         let url2 = '/Boards/Game';
 
@@ -371,6 +377,7 @@ window.onload = function () {
             success: function () {
                 let url3 = '/Boards/Json';
                 decision = 0;
+                current_mysterious_card = 0;
                 httpGet(url3, 'json', function (response) {
                     movePlayer();
                     promise = new Promise(function (resolve, reject) {
@@ -569,5 +576,11 @@ function loadData()
         }
 
 
+    }
+
+    for (let l = 0; l < mysterious_cards.length; l++) {
+        mysterious_cards[l].id_MysteriousCard = json_object.mysterious_card_list[l].id_mysterious_card;
+        mysterious_cards[l].Description = json_object.mysterious_card_list[l].description;
+        mysterious_cards[l].Reward = json_object.mysterious_card_list[l].reward;
     }
 }
