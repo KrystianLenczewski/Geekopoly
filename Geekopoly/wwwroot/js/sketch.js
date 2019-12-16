@@ -43,17 +43,16 @@ var current_player;
 var current_field;
 var decision;
 var current_mysterious_card;
+var m = 0;
 
 function preload() {
     let url = '/Boards/Json';
     httpGet(url, 'json', function (response) {
         flag = true;
         json_object = response;
-       // setup();
         replace_setup();
     });
 }
-var m = 0;
 
 window.onload = function () {
 
@@ -336,10 +335,7 @@ function setup() {
 
 }
 
-
 function replace_setup() {
-
-    //createCanvas(1800, 1800);
     background(255);
 
     for (var i = 0; i < 3; i++) {
@@ -464,11 +460,6 @@ function replace_setup() {
 
 }
 
-
-
-
-
-
 function draw() {
 
 
@@ -492,140 +483,133 @@ function draw() {
 
     }
 
+function dataPosted(result) {
 
+    console.log(result);
+}
 
-    function dataPosted(result) {
+function dataError(err) {
+    console.log(err);
+}
 
-        console.log(result);
-    }
+var response23;
+var promise;
 
-    function dataError(err) {
-        console.log(err);
-    }
+function dice_roll() {
+    let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 2;
+    let json_data = { numbers: generated_numbers, decision_value: -1, mysterious_card_number: current_mysterious_card };
 
-    var response23;
-    var promise;
-    function dice_roll() {
-        let generated_numbers = this.numbers = Math.floor(Math.random() * 12) + 2;
-        let json_data = { numbers: generated_numbers, decision_value: -1, mysterious_card_number: current_mysterious_card };
+    let url2 = '/Boards/Game';
 
-        let url2 = '/Boards/Game';
-
-        $.ajax({
-            type: "POST",
-            url: "/Boards/Game",
-            data: JSON.stringify(json_data),
-            contentType: "application/json",
-            success: function () {
-                let url3 = '/Boards/Json';
-                decision = 0;
-                current_mysterious_card = 0;
-                httpGet(url3, 'json', function (response) {
-                    movePlayer();
-                    promise = new Promise(function (resolve, reject) {
-                        response23 = response;
-                        if (response23 === response) {
-                            resolve();
-                        }
-                        else {
-                            reject();
-                        }
-                    });
-                    promise.then(move_and_generate_decision)
-                        .catch(function () {
-                            console.log('Error in promise');
-                        });
-                });
-            },
-            error: function (data) {
-                console.log('Error: ' + data);
-            }
-
-        });
-    }
-
-    function move_and_generate_decision() {
-        dipslayPlayers();
-        // movePlayer();
-        let current_player_index = response23.board_list[0].current_player_index;
-        if (current_player_index == 0) { current_player_index = 3; }
-        else { current_player_index = current_player_index - 1; }
-
-        decision_player = response23.player_list[current_player_index];
-
-
-        generate_decision_popup(decision_player);
-    }
-
-
-    var object_from_json;
-    function movePlayer() {
-
-        let url4 = '/Boards/Json';
-        httpGet(url4, 'json', function (response) {
-            object_from_json = response;
-            move_pl();
-
-        });
-
-    }
-    function move_pl() {
-
-
-        for (let i = 0; i < 4; i++) {
-            counters[i].Position = object_from_json.player_list[i].position
-
-        }
-        var player_ = object_from_json.board_list[0].current_player_index;
-        if (player_ == 0) player_ = 4;
-        for (let i = 0; i < 4; i++) {
-            for (let z = 0; z < 40; z++) {
-                if (counters[i].id_Player == player_ && counters[i].Position == FieldArray[z].id_Field) {
-
-                    counters[i].x = FieldArray[z].x + 10;
-                    counters[i].y = FieldArray[z].y + 10;
-
-                    for (let m = 0; m < 4; m++) {
-
-                        counters[m].show_counter(counters[m].Color);
+    $.ajax({
+        type: "POST",
+        url: "/Boards/Game",
+        data: JSON.stringify(json_data),
+        contentType: "application/json",
+        success: function () {
+            let url3 = '/Boards/Json';
+            decision = 0;
+            current_mysterious_card = 0;
+            httpGet(url3, 'json', function (response) {
+                movePlayer();
+                promise = new Promise(function (resolve, reject) {
+                    response23 = response;
+                    if (response23 === response) {
+                        resolve();
                     }
+                    else {
+                        reject();
+                    }
+                });
+                promise.then(move_and_generate_decision)
+                    .catch(function () {
+                        console.log('Error in promise');
+                    });
+            });
+        },
+        error: function (data) {
+            console.log('Error: ' + data);
+        }
 
-                    break;
+    });
+}
+
+function move_and_generate_decision() {
+    dipslayPlayers();
+    // movePlayer();
+    let current_player_index = response23.board_list[0].current_player_index;
+    if (current_player_index == 0) { current_player_index = 3; }
+    else { current_player_index = current_player_index - 1; }
+
+    decision_player = response23.player_list[current_player_index];
+
+
+    generate_decision_popup(decision_player);
+}
+
+var object_from_json;
+
+function movePlayer() {
+
+    let url4 = '/Boards/Json';
+    httpGet(url4, 'json', function (response) {
+        object_from_json = response;
+        move_pl();
+
+    });
+
+}
+
+function move_pl() {
+
+
+    for (let i = 0; i < 4; i++) {
+        counters[i].Position = object_from_json.player_list[i].position
+
+    }
+    var player_ = object_from_json.board_list[0].current_player_index;
+    if (player_ == 0) player_ = 4;
+    for (let i = 0; i < 4; i++) {
+        for (let z = 0; z < 40; z++) {
+            if (counters[i].id_Player == player_ && counters[i].Position == FieldArray[z].id_Field) {
+
+                counters[i].x = FieldArray[z].x + 10;
+                counters[i].y = FieldArray[z].y + 10;
+
+                for (let m = 0; m < 4; m++) {
+
+                    counters[m].show_counter(counters[m].Color);
                 }
+
+                break;
             }
-
         }
-    }
-
-
-    function dipslayPlayers() {
-        for (var i = 0; i < 4; i++) {
-            PlayerArray[i].id_Player = response23.player_list[i].id_player;
-            PlayerArray[i].Name_Player = response23.player_list[i].name;
-            PlayerArray[i].Position = response23.player_list[i].position;
-
-        }
-        for (var i = 0; i < 4; i++) {
-            PlayerArray[i].show_player();
-        }
-    }
-
-    function generate_decision_popup(player) {
-        popup_open = true;
-        current_player = player;
-        current_field = FieldArray[player.position];
-
-
-        let decision = new Decision(current_field, current_player);
-        decision.make_decision();
-
-
 
     }
+}
 
+function dipslayPlayers() {
+    for (var i = 0; i < 4; i++) {
+        PlayerArray[i].id_Player = response23.player_list[i].id_player;
+        PlayerArray[i].Name_Player = response23.player_list[i].name;
+        PlayerArray[i].Position = response23.player_list[i].position;
 
+    }
+    for (var i = 0; i < 4; i++) {
+        PlayerArray[i].show_player();
+    }
+}
 
-    function loadData() {
+function generate_decision_popup(player) {
+    popup_open = true;
+    current_player = player;
+    current_field = FieldArray[player.position];
+
+    let decision = new Decision(current_field, current_player);
+    decision.make_decision();
+}
+
+function loadData() {
         for (let i = 0; i < 40; i++) {
             fields[i].nameOfField2 = json_object.field_list[i].name;
             fields[i].id_Field = json_object.field_list[i].id_field;
@@ -725,8 +709,6 @@ function draw() {
             mysterious_cards[l].Reward = json_object.mysterious_card_list[l].reward;
         }
     }
-
-
 
 function assign_property_to_player() {
     
