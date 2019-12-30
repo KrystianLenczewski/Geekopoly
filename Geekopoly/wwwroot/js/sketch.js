@@ -58,6 +58,8 @@ window.onload = function () {
 
     decision = -1;
     let bClick = document.getElementById("roll");
+    document.getElementById("roll").style.background = '#FFFFFF';
+
     bClick.onclick = function () {
 
         dice_roll();
@@ -65,6 +67,7 @@ window.onload = function () {
     };
 
     let buyButton = document.getElementById("buy");
+    document.getElementById("buy").style.background = '#FFFFFF';
     buyButton.onclick = function () {
 
         let property;
@@ -92,7 +95,7 @@ window.onload = function () {
         else {
             decision = 0;
         }
-       popup_background.remove();
+        popup_background.remove();
         let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
         $.ajax({
             type: "POST",
@@ -110,6 +113,7 @@ window.onload = function () {
     };
 
     let upgradeButton = document.getElementById("upgrade");
+    document.getElementById("upgrade").style.background = '#FFFFFF';
     upgradeButton.onclick = function () {
 
         let property;
@@ -157,8 +161,12 @@ window.onload = function () {
     };
 
     let okButton = document.getElementById("ok");
+    document.getElementById("ok").style.background = '#FFFFFF';
     okButton.onclick = function () {
         popup_background.remove();
+        document.getElementById("ok").style.background = '#FFFFFF';
+        document.getElementById("lucky6").style.background = '#FFFFFF';
+        document.getElementById("pay_prison_penalty").style.background = '#FFFFFF';
         if (decision === 3 || decision === 6 || decision === 7) {
             let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
             $.ajax({
@@ -166,8 +174,7 @@ window.onload = function () {
                 url: "/Boards/Game",
                 data: JSON.stringify(json_data),
                 contentType: "application/json",
-                success: function () {
-                    
+                success: function () {            
                     let url3 = '/Boards/Json';
                     httpGet(url3, 'json', function (response) {
                         json_object = response;
@@ -176,55 +183,61 @@ window.onload = function () {
                 }
             });
         }
+    };
 
-        let luckySixButton = document.getElementById("lucky6");
-        luckySixButton.onclick = function () {
-            popup_background.remove();
-            if ((Math.floor(Math.random() * 12) + 2) === 12) {
-                decision = 4;
+    let luckySixButton = document.getElementById("lucky6");
+    document.getElementById("lucky6").style.background = '#FFFFFF';
+    luckySixButton.onclick = function () {
+        popup_background.remove();
+        document.getElementById("ok").style.background = '#FFFFFF';
+        document.getElementById("lucky6").style.background = '#FFFFFF';
+        document.getElementById("pay_prison_penalty").style.background = '#FFFFFF';
+        if ((Math.floor(Math.random() * 12) + 2) === 12) {
+            decision = 4;
+        }
+        else {
+            decision = 0;
+        }
+
+        let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
+        $.ajax({
+            type: "POST",
+            url: "/Boards/Game",
+            data: JSON.stringify(json_data),
+            contentType: "application/json",
+            success: function () {
+                let url3 = '/Boards/Json';
+                httpGet(url3, 'json', function (response) {
+                    json_object = response;
+                    loadData();
+                });
             }
-            else {
-                decision = 0;
+        });
+    };
+
+    let payForFreedom = document.getElementById("pay_prison_penalty");
+    document.getElementById("pay_prison_penalty").style.background = '#FFFFFF';
+    payForFreedom.onclick = function () {
+        popup_background.remove();
+        document.getElementById("ok").style.background = '#FFFFFF';
+        document.getElementById("lucky6").style.background = '#FFFFFF';
+        document.getElementById("pay_prison_penalty").style.background = '#FFFFFF';
+        decision = 5;
+
+        let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
+        $.ajax({
+            type: "POST",
+            url: "/Boards/Game",
+            data: JSON.stringify(json_data),
+            contentType: "application/json",
+            success: function () {
+                let url3 = '/Boards/Json';
+                httpGet(url3, 'json', function (response) {
+                    json_object = response;
+                    loadData();
+                });
             }
-
-            let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
-            $.ajax({
-                type: "POST",
-                url: "/Boards/Game",
-                data: JSON.stringify(json_data),
-                contentType: "application/json",
-                success: function () {
-                    let url3 = '/Boards/Json';
-                    httpGet(url3, 'json', function (response) {
-                        json_object = response;
-                        loadData();
-                    });
-                }
-            });
-
-
-        };
-        let payForFreedom = document.getElementById("pay_prison_penalty");
-        payForFreedom.onclick = function () {
-            popup_background.remove();
-            decision = 5;
-
-            let json_data = { numbers: -1, decision_value: decision, mysterious_card_number: current_mysterious_card };
-            $.ajax({
-                type: "POST",
-                url: "/Boards/Game",
-                data: JSON.stringify(json_data),
-                contentType: "application/json",
-                success: function () {
-                    let url3 = '/Boards/Json';
-                    httpGet(url3, 'json', function (response) {
-                        json_object = response;
-                        loadData();
-                    });
-                }
-            });
-
-        };
+        });
     };
 };
 
@@ -238,7 +251,6 @@ function setup() {
             var x = (i + 5) * 200;
             var y = (k) * 180;
             newtile[m] = new category_class('', x, y, 170, 170, '', 0, 0, 0, '');
-
             m = m + 1;
         }
     }
@@ -254,44 +266,34 @@ function setup() {
 
 
         for (let i = 0; i < 40; i++) {
-
             FieldArray[i] = new Tile(0, 0, 0, 0, 0, '', 0, 0);
         }
         for (let i = 0; i < 9; i++) {
             CategoryArray[i] = new category_class('', 0, 0, 150, 150, '', 0, 0, 0);
         }
 
-    xx = 80;
+        xx = 80;
         if (flag) {
             loadData();
         }
 
         for (var i = 0; i < 11; i++) {
-
             var posX = map(i, 0, 11, 0, widthheight);
-
-
             FieldArray[i] = new Tile(posX, 0, 80, xx, FieldArray[i].id_Field, FieldArray[i].nameOfField, FieldArray[i].TypeOfField, FieldArray[i].Price);
     }
 
-
         var k = 10;
         for (var i = 0; i < 11; i++) {
-
             var posX = map(i, 0, 11, 0, widthheight);
             if (k < 21) {
-
                 FieldArray[k] = new Tile(widthheight - 80, posX, 80, xx, FieldArray[k].id_Field, FieldArray[k].nameOfField, FieldArray[k].TypeOfField, FieldArray[k].Price);
                 k = k + 1;
-
             }
         }
         var k2 = 30;
         for (var i = 0; i < 11; i++) {
-
             var posX2 = map(i, 0, 11, 0, widthheight);
             if (k2 >= 21) {
-
                 FieldArray[k2] = new Tile(posX2, widthheight - 80, 80, xx, FieldArray[k2].id_Field, FieldArray[k2].nameOfField, FieldArray[k2].TypeOfField, FieldArray[k2].Price);
                 k2 = k2 - 1;
             }
@@ -302,15 +304,11 @@ function setup() {
             var posY = map(i, 0, 11, 0, widthheight);
 
             if (k3 >= 30) {
-
                 FieldArray[k3] = new Tile(0, posY, 80, xx, FieldArray[k3].id_Field, FieldArray[k3].nameOfField, FieldArray[k3].TypeOfField, FieldArray[k3].Price);
                 k3 = k3 - 1;
-
-
             }
             var d2 = 0;
             for (let i = 0; i < 2; i++) {
-
                 for (let z = 0; z < 2; z++) {
                     let x = (i + 1) * 20;
                     let y = (z + 2) * 20;
@@ -329,27 +327,22 @@ function setup() {
                 counters[3].Color = 'BLACK';
 
             }
-    }
-
-
-
+        }
 }
 
 function replace_setup() {
     background(255);
 
     for (var i = 0; i < 3; i++) {
-
         for (var k = 0; k < 3; k++) {
             var x = (i + 4) * 255;
             var y = (k) * 225;
             newtile[m] = new category_class('', x, y, 150, 150, '', 0, 0, 0, '');
-
             m = m + 1;
         }
     }
-    for (let p = 0; p < 9; p++) {
 
+    for (let p = 0; p < 9; p++) {
         if (p == 6) {
             newtile[p] = new category_class('', newtile[p - 1].x, newtile[p-1].y+180, 170, 170, '', 0, 0, 0, '');
         }
@@ -358,8 +351,7 @@ function replace_setup() {
         }
         if (p == 8) {
             newtile[p] = new category_class('', newtile[7].x+70, newtile[7].y + 190, 220, 140, '', 0, 0, 0, '');
-        }
-        
+        }   
     }
     let b2 = 0;
     for (var i = 0; i < 2; i++) {
@@ -371,9 +363,7 @@ function replace_setup() {
         }
     }
 
-
     for (let i = 0; i < 40; i++) {
-
         FieldArray[i] = new Tile(0, 0, 0, 0, 0, '', 0, 0);
     }
     for (let i = 0; i < 9; i++) {
@@ -386,30 +376,22 @@ function replace_setup() {
     }
 
     for (var i = 0; i < 11; i++) {
-
         var posX = map(i, 0, 11, 0, widthheight);
-
-
         FieldArray[i] = new Tile(posX, 0, 80, 80, FieldArray[i].id_Field, FieldArray[i].nameOfField, FieldArray[i].TypeOfField, FieldArray[i].Price);
     }
 
     var k = 10;
     for (var i = 0; i < 11; i++) {
-
         var posX = map(i, 0, 11, 0, widthheight);
         if (k < 21) {
-
             FieldArray[k] = new Tile(widthheight - 80, posX, 80, 80, FieldArray[k].id_Field, FieldArray[k].nameOfField, FieldArray[k].TypeOfField, FieldArray[k].Price);
             k = k + 1;
-
         }
     }
     var k2 = 30;
     for (var i = 0; i < 11; i++) {
-
         var posX2 = map(i, 0, 11, 0, widthheight);
         if (k2 >= 21) {
-
             FieldArray[k2] = new Tile(posX2, widthheight - 80, 80, 80, FieldArray[k2].id_Field, FieldArray[k2].nameOfField, FieldArray[k2].TypeOfField, FieldArray[k2].Price);
             k2 = k2 - 1;
         }
@@ -420,15 +402,11 @@ function replace_setup() {
         var posY = map(i, 0, 11, 0, widthheight);
 
         if (k3 >= 30) {
-
             FieldArray[k3] = new Tile(0, posY, 80, 80, FieldArray[k3].id_Field, FieldArray[k3].nameOfField, FieldArray[k3].TypeOfField, FieldArray[k3].Price);
             k3 = k3 - 1;
-
-
         }
         var d2 = 0;
         for (let i = 0; i < 2; i++) {
-
             for (let z = 0; z < 2; z++) {
                 let x = (i + 1) * 20;
                 let y = (z + 2) * 20;
@@ -445,46 +423,27 @@ function replace_setup() {
             counters[1].Color = 'BLUE';
             counters[2].Color = 'YELLOW';
             counters[3].Color = 'BLACK';
-
-        }
-    
-}
-
-
-
-
-
-
-
-
-
+        }   
+    }
 }
 
 function draw() {
-
 
     for (let i = 0; i < 40; i++) {
         FieldArray[i].show();
     }
     for (let k = 0; k < 9; k++) {
-    
             newtile[k].show_tiles();
-
-        
     }
-        for (let j = 0; j < 4; j++) {
-            PlayerArray[j].show_player();
-        }
-        for (let m = 0; m < 4; m++) {
-
-            counters[m].show_counter(counters[m].Color);
-        }
-
-
+    for (let j = 0; j < 4; j++) {
+        PlayerArray[j].show_player();
     }
+    for (let m = 0; m < 4; m++) {
+        counters[m].show_counter(counters[m].Color);
+    }
+}
 
 function dataPosted(result) {
-
     console.log(result);
 }
 
@@ -530,7 +489,6 @@ function dice_roll() {
         error: function (data) {
             console.log('Error: ' + data);
         }
-
     });
 }
 
@@ -542,8 +500,6 @@ function move_and_generate_decision() {
     else { current_player_index = current_player_index - 1; }
 
     decision_player = response23.player_list[current_player_index];
-
-
     generate_decision_popup(decision_player);
 }
 
@@ -555,18 +511,15 @@ function movePlayer() {
     httpGet(url4, 'json', function (response) {
         object_from_json = response;
         move_pl();
-
     });
 
 }
 
 function move_pl() {
-
-
     for (let i = 0; i < 4; i++) {
         counters[i].Position = object_from_json.player_list[i].position
-
     }
+
     var player_ = object_from_json.board_list[0].current_player_index;
     if (player_ == 0) player_ = 4;
     for (let i = 0; i < 4; i++) {
@@ -580,11 +533,9 @@ function move_pl() {
 
                     counters[m].show_counter(counters[m].Color);
                 }
-
                 break;
             }
         }
-
     }
 }
 
@@ -593,7 +544,6 @@ function dipslayPlayers() {
         PlayerArray[i].id_Player = response23.player_list[i].id_player;
         PlayerArray[i].Name_Player = response23.player_list[i].name;
         PlayerArray[i].Position = response23.player_list[i].position;
-
     }
     for (var i = 0; i < 4; i++) {
         PlayerArray[i].show_player();
@@ -604,7 +554,6 @@ function generate_decision_popup(player) {
     popup_open = true;
     current_player = player;
     current_field = FieldArray[player.position];
-
     let decision = new Decision(current_field, current_player);
     decision.make_decision();
 }
@@ -614,14 +563,12 @@ function loadData() {
             fields[i].nameOfField2 = json_object.field_list[i].name;
             fields[i].id_Field = json_object.field_list[i].id_field;
             fields[i].TypeOfField = json_object.field_list[i].field_type;
-
         }
         for (let i = 0; i < 4; i++) {
             players[i].id_Player = json_object.player_list[i].id_player;
             players[i].NameOfPlayer = json_object.player_list[i].name;
             players[i].AmountOfCash = json_object.player_list[i].amount_of_cash;
             players[i].PositionPlayer = json_object.player_list[i].position;
-
         }
         for (let i = 0; i < 28; i++) {
             properites[i].id_Property = json_object.property_list[i].id_property;
@@ -629,32 +576,25 @@ function loadData() {
             properites[i].owner_FK = json_object.property_list[i].ownerFK;
             properites[i].field_Fk = json_object.property_list[i].fieldFK;
             properites[i].category_FK = json_object.property_list[i].categoryFK;
-
-
         }
         for (let i = 0; i < 9; i++) {
-
             categories[i].id_Category = json_object.category_list[i].id_category;
             categories[i].Name = json_object.category_list[i].name;
             categories[i].entry_Value = json_object.category_list[i].entry_value;
             categories[i].upgrade_Cost = json_object.category_list[i].upgrade_cost;
 
         }
-
         for (let i = 0; i < 4; i++) {
             PlayerArray[i].id_Player = players[i].id_Player;
             PlayerArray[i].Name_Player = players[i].NameOfPlayer;
             PlayerArray[i].amount_Of_Cash = players[i].AmountOfCash;
             PlayerArray[i].Position = players[i].PositionPlayer;
         }
-
-
         for (let i = 0; i < 40; i++) {
             FieldArray[i].id_Field = fields[i].id_Field;
             FieldArray[i].nameOfField = fields[i].nameOfField2;
             FieldArray[i].TypeOfField = fields[i].TypeOfField;
         }
-
         for (let i = 0; i < 9; i++) {
 
             CategoryArray[i].id_Category = categories[i].id_Category;
@@ -692,15 +632,9 @@ function loadData() {
                                 a = a + 1;
                                 zz = zz + 1;
                             }
-
-
-
                     }
                 }
-
             }
-
-
         }
 
         for (let l = 0; l < mysterious_cards.length; l++) {
@@ -725,10 +659,4 @@ function assign_property_to_player() {
             }
         }
     }
-
-
-
-
-
-
 }
