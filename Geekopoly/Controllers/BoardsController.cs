@@ -257,35 +257,59 @@ namespace Geekopoly.Controllers
                         if (current_player_index != 0) current_player_index = current_player_index - 1;
                         else current_player_index = 3;
                         var field_id = player[current_player_index].position;
-                            var enemy_player = new Player();
-                            var current_property = new Property();
-                            var current_category = new Category();
-                            foreach (Property pr in property)
+                        var enemy_player = new Player();
+                        var current_property = new Property();
+                        var current_category = new Category();
+                        foreach (Property pr in property)
+                        {
+                            if (pr.fieldFK == field_id)
                             {
-                                if (pr.fieldFK == field_id)
-                                {
-                                    current_property = pr;
-                                }
+                                current_property = pr;
                             }
+                        }
 
-                            foreach (Category c in category)
+                        foreach (Category c in category)
+                        {
+                            if (c.id_category == current_property.categoryFK)
                             {
-                                if (c.id_category == current_property.categoryFK)
-                                {
-                                    current_category = c;
-                                }
+                                current_category = c;
                             }
+                        }
                         
-                            for (var i = 0; i < 4; i++) { 
-                                if(player[i].id_player == current_property.ownerFK)
-                                {
-                                enemy_player.id_player = player[i].id_player;
+                        for (var i = 0; i < 4; i++) { 
+                            if(player[i].id_player == current_property.ownerFK)
+                            {
+                            enemy_player.id_player = player[i].id_player;
                                
-                                enemy_player.amount_of_cash = player[i].amount_of_cash;
+                            enemy_player.amount_of_cash = player[i].amount_of_cash;
+                            }
+                        }
+
+                        int property_counter = 0;
+                        int number_properties_in_category = 0;
+
+                        foreach (Property pr in property)
+                        {
+                            if (pr.categoryFK == current_category.id_category)
+                            {
+                                number_properties_in_category++;
+                                if (pr.ownerFK != null) {
+                                    if (pr.ownerFK.Value == enemy_player.id_player)
+                                    {
+                                        property_counter++;
+                                    }
                                 }
                             }
+                        }
 
-                            int penalty = current_category.entry_value + ((current_category.upgrade_cost*(current_property.type_of_property.Value - 1)) - 50);
+                        int neighbourhood_bonus = 0;
+
+                        if(number_properties_in_category == property_counter)
+                        {
+                            neighbourhood_bonus = 100;
+                        }
+
+                        int penalty = current_category.entry_value + ((current_category.upgrade_cost*(current_property.type_of_property.Value - 1)) - 50) + neighbourhood_bonus;
 
                         player[current_player_index].amount_of_cash -= penalty;
                          enemy_player.amount_of_cash += penalty;
