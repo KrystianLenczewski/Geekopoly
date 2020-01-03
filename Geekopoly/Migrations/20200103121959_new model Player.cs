@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Geekopoly.Migrations
 {
-    public partial class myMigration : Migration
+    public partial class newmodelPlayer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,7 +98,8 @@ namespace Geekopoly.Migrations
                     name = table.Column<string>(nullable: true),
                     amount_of_cash = table.Column<int>(nullable: false),
                     position = table.Column<int>(nullable: false),
-                    is_in_jail = table.Column<bool>(nullable: false)
+                    is_in_jail = table.Column<bool>(nullable: false),
+                    is_active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

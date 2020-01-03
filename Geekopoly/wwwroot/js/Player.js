@@ -3,7 +3,7 @@
 player_properties = [];
 
 class Player {
-    constructor(x, y, lar, alt, id_Player, Name_Player, amount_Of_Cash, Position, player_properties) {
+    constructor(x, y, lar, alt, id_Player, Name_Player, amount_Of_Cash, Position, player_properties,is_Active) {
         this.id_Player = id_Player;
         this.Name_Player = Name_Player;
         this.amount_Of_Cash = amount_Of_Cash;
@@ -13,17 +13,20 @@ class Player {
         this.lar = lar;
         this.alt = alt;
         this.player_properties = new Array();
-
+        this.is_Active = is_Active;
+      
     }
    
     show_player() {
         //noStroke();
         var k = 0;
-       var yy = 55;
+        var yy = 55;
+        var height_rect = 340;
         fill(255);
         if (this.id_Player == 1) {
+            strokeWeight(7);
             stroke('red');
-            rect(this.x, 150, this.lar, 300);
+            rect(this.x, 150, this.lar, height_rect);
 
 
             fill('BLACK');
@@ -39,12 +42,14 @@ class Player {
             }
         }
         else if (this.id_Player == 2) {
-            stroke('blue');
-            rect(this.x, this.y, this.lar, 300);
+            strokeWeight(7);
+            stroke('green');
+            rect(this.x, this.y, this.lar, height_rect);
         }
         else if (this.id_Player == 3) {
+            strokeWeight(7);
             stroke('yellow');
-            rect(this.x, 150, this.lar, 300);
+            rect(this.x, 150, this.lar, height_rect);
             fill('BLACK');
             noStroke();
             text(this.Name_Player, this.x + 10, 170);
@@ -60,8 +65,9 @@ class Player {
 
         }
         else if (this.id_Player == 4) {
-            stroke('black');
-            rect(this.x, this.y, this.lar, 300);
+            strokeWeight(7);
+            stroke('#06F3C8');
+            rect(this.x, this.y, this.lar, height_rect);
         }
         if (this.id_Player != 1&& this.id_Player!=3) {
             fill('BLACK');

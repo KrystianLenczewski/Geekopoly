@@ -5,22 +5,18 @@
 <br />
 <br />
 <br />
+<link rel="stylesheet" href="site.css">
 
-<table class="table">
 
-    <tbody>
 
         @foreach (var item in Model)
         {
-            <tr>
-
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.id_player">Add name</a>
-                </td>
-            </tr>
+            
+                    <a class="addName"asp-action="Edit" asp-route-id="@item.id_player">Add name</a>
+                    <br/>
+             
         }
-    </tbody>
-</table>
+
 <p>
-    <a class="text" asp-action="GoToBoard">Play </a>
+    <a class="play" asp-action="GoToBoard">Play </a>
 </p>

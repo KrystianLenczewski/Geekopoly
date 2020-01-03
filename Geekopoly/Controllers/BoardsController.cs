@@ -120,11 +120,30 @@ namespace Geekopoly.Controllers
                 {
                     d.numbers = dices_value;
                 }
-
+               
 
                 foreach (Board b in board)
                 {
                     current_player_index = b.current_player_index;
+                    
+                    if (player[current_player_index].amount_of_cash <= 0)
+                    {
+                        player[current_player_index].is_active = false;
+
+                        foreach (Property pr in property)
+                        {
+                            if (pr.ownerFK == player[current_player_index].id_player)
+                            {
+                                pr.ownerFK = null;
+                                pr.type_of_property = 1;
+                            }
+                        }
+
+
+                        current_player_index = (current_player_index + 1) % 4;
+
+                        
+                    }
                     if (player[current_player_index].is_in_jail == true)
                     {
                         int next_index = player[current_player_index].find_next_free_player_id(current_player_index + 1) - 1;
@@ -158,8 +177,9 @@ namespace Geekopoly.Controllers
 
             }
 
-            if (dices_value < 0)
+            if (dices_value < 0 && player[current_player_index].is_active==true)
             {
+                
                 switch (value_of_decision) {
                     case 1:
                         if (current_player_index != 0) current_player_index = current_player_index - 1;
@@ -337,6 +357,7 @@ namespace Geekopoly.Controllers
             }
                 foreach (Board b in board)
                 {
+                
                     b.current_player_index = (current_player_index + 1) % 4;
                 }
 

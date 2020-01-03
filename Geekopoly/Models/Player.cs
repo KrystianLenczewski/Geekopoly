@@ -19,6 +19,7 @@ namespace Geekopoly.Models
         public int amount_of_cash { get; set; } = initial_player_money;
         public int position { get; set; }
         public bool is_in_jail { get; set; } = false;
+        public bool is_active { get; set; } = true;
         //public List<Property> Properties { get; set; } = new List<Property>();
 
 
@@ -157,7 +158,7 @@ namespace Geekopoly.Models
                     int difference = 4;
                     foreach(Player p in player)
                     {
-                        if (p.id_player != current_player_id && p.is_in_jail == false)
+                        if (p.id_player != current_player_id && p.is_in_jail == false && p.is_active==true)
                         {
                             if (Math.Abs(current_player_id - p.id_player) < difference )
                             {
@@ -183,7 +184,7 @@ namespace Geekopoly.Models
                     int max_difference = 0;
                     while (counter<3)
                     {
-                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false)
+                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false && player[current_position].is_active==true)
                         {
                             if (Math.Abs(current_player_id - player[current_position].id_player) < min_difference   && player[current_position].id_player > current_player_id)
                             {
@@ -233,7 +234,7 @@ namespace Geekopoly.Models
                     current_position = current_player_id - 1;
                     while (counter < 3)
                     {
-                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false)
+                        if (player[current_position].id_player != current_player_id && player[current_position].is_in_jail == false && player[current_position].is_active==true)
                         {
                             if (min_difference > Math.Abs(current_player_id - player[current_position].id_player) && player[current_position].id_player > current_player_id)
                             {
@@ -282,7 +283,7 @@ namespace Geekopoly.Models
                     difference = 0;
                     foreach (Player p in player)
                     {
-                        if (p.id_player != current_player_id && p.is_in_jail == false)
+                        if (p.id_player != current_player_id && p.is_in_jail == false && p.is_active==true)
                         {
                             if (difference < Math.Abs(current_player_id - p.id_player))
                             {

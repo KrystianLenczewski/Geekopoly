@@ -21,8 +21,8 @@ class category_class {
 
     show_tiles() {
         //noStroke();
-
-        fill(255);
+       // background('lightskyblue');
+        fill('lightskyblue');
         rect(this.x, this.y, this.lar, this.alt);
         fill('BLACK');
         text(this.nameOfCategory, this.x + 10, this.y + 20);
@@ -33,35 +33,35 @@ class category_class {
             text("Owner: " + this.owner_property_name[0], this.x + 10, this.y + 50);
         }
         else {
-            text("Free estate", this.x + 10, this.y + 50);
+            text("Free estate ", this.x + 10, this.y + 50);
         }
         textStyle(NORMAL);
-        text(this.property1[1], this.x + 10, this.y + 60);
+        text(this.property1[1], this.x + 10, this.y + 70);
         textStyle(BOLD);
         if (this.owner_property_name[1] !== null) {
-            text("Owner: " + this.owner_property_name[1], this.x + 10, this.y + 70);
+            text("Owner: " + this.owner_property_name[1], this.x + 10, this.y + 80);
         }
         else {
-            text("Free estate", this.x + 10, this.y + 70);
+            text("Free estate", this.x + 10, this.y + 80);
         }
         textStyle(NORMAL);
-        text(this.property1[2], this.x + 10, this.y + 80);
+        text(this.property1[2], this.x + 10, this.y + 100);
         textStyle(BOLD);
         if (this.owner_property_name[2] !== null) {
-            text("Owner: " + this.owner_property_name[2], this.x + 10, this.y + 90);
+            text("Owner: " + this.owner_property_name[2], this.x + 10, this.y + 110);
         }
         else {
-            text("Free estate", this.x + 10, this.y + 90);
+            text("Free estate", this.x + 10, this.y + 110);
         }
         textStyle(NORMAL);
         var special4 = "OFFICE IN SILICON VALLEY";
         if ((special4.localeCompare(this.property1[3])) == 0) {
-            text(this.property1[3], this.x + 10, this.y + 100);
+            text(this.property1[3], this.x + 10, this.y + 130);
             textStyle(BOLD);
             if (this.owner_property_name[3] !== null)
-                text("Owner: " + this.owner_property_name[3], this.x + 10, this.y + 110);
+                text("Owner: " + this.owner_property_name[3], this.x + 10, this.y + 140);
             else {
-                text("Free estate", this.x + 10, this.y + 110);
+                text("Free estate", this.x + 10, this.y + 140);
             }
         }
 

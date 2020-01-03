@@ -3,6 +3,7 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="site.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="~/js/p5.js" asp-append-version="true"></script>
     <script src="~/js/Tile.js"></script>
@@ -12,24 +13,20 @@
     <script src="~/js/Counter.js"></script>
     <script src="~/js/Dice.js"></script>
     <script src="~/js/Decision.js"></script>
-    
-
-
 
 </head>
 
 <body>
-    <button id="roll">ROLL DICE </button>
-    <button id="buy" style="margin-left: 30px;">BUY</button>
-    <button id="upgrade" style="margin-left: 30px;">UPGRADE</button>
-    <button id="ok" style="margin-left: 30px;">UNDERSTOOD</button>
-    <button id="lucky6" style="margin-left: 30px;">TRY TO ROLL</button>
-    <button id="pay_prison_penalty" style="margin-left: 30px;">PAY FOR FREEDOM</button>
+    <button id="roll" class="buttons">ROLL DICE </button>
+    <button id="buy" class="buttons"disabled>BUY</button>
+    <button id="upgrade" class="buttons"disabled>UPGRADE</button>
+    <button id="ok" class="buttons"disabled>UNDERSTOOD</button>
+    <button id="lucky6" class="buttons"disabled>TRY TO ROLL</button>
+    <button id="pay_prison_penalty" class="buttons"disabled>PAY FOR FREEDOM</button>
 
-    <br />
-    <p>
-        <a class="text" asp-action="Quit">Quit game</a>
-    </p>
+
+    <a class="text" asp-action="Quit">Quit game</a>
+
 
 
 </body>
