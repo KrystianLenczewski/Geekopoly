@@ -63,7 +63,7 @@ namespace Geekopoly
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Boards}/{action=Game}/{id?}");
+                    template: "{controller=Players}/{action=Index}/{id?}");
             });
         }
     }

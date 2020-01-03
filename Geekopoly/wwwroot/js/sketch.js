@@ -512,6 +512,11 @@ function draw() {
             rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
 
         }
+        if (i == 5 ) {
+            fill('#FF1493');
+            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+
+        }
         if (i == 11 || i == 12 || i == 14) {
             fill('GREEN');
             rect(FieldArray[i].x, FieldArray[i].y,10, FieldArray[i].alt);
@@ -522,30 +527,40 @@ function draw() {
             rect(FieldArray[i].x, FieldArray[i].y, 10, FieldArray[i].alt);
 
         }
+        if (i == 15) {
+            fill('#FF1493');
+            rect(FieldArray[i].x, FieldArray[i].y, 10, FieldArray[i].alt);
+
+        }
         if (i == 21 || i == 23 || i == 24) {
             fill('BROWN');
-            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+            rect(FieldArray[i].x, FieldArray[i].y, FieldArray[i].lar, 10);
 
         }
         if (i == 26 || i == 28 || i == 29) {
             fill('#00CED1');
           
-            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+            rect(FieldArray[i].x, FieldArray[i].y, FieldArray[i].lar, 10);
+
+        }
+        if ( i == 25) {
+            fill('#FF1493');
+            rect(FieldArray[i].x, FieldArray[i].y, FieldArray[i].lar, 10);
 
         }
         if (i == 31 || i == 33 || i == 34) {
             fill('PURPLE');
-            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+            rect(FieldArray[i].x+80, FieldArray[i].y,10, FieldArray[i].lar+10);
 
         }
         if (i == 36 || i == 38 || i == 39) {
             fill('ORANGE');
-            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+            rect(FieldArray[i].x + 80, FieldArray[i].y, 10, FieldArray[i].lar + 10);
 
         }
-        if (i == 5 || i == 15 || i == 25 || i==35) {
+        if (i ==35) {
             fill('#FF1493');
-            rect(FieldArray[i].x, FieldArray[i].y + 90, FieldArray[i].lar, 10);
+            rect(FieldArray[i].x + 80, FieldArray[i].y, 10, FieldArray[i].lar + 10);
 
         }
     }
