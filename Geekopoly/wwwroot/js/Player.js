@@ -31,12 +31,14 @@ class Player {
 
             fill('BLACK');
             noStroke();
-            text(this.Name_Player, this.x + 10, 170);
-            text(this.amount_Of_Cash, this.x + 10, 180);
-            text(this.Position, this.x + 10, 190); 
+            textStyle(NORMAL);
+            textSize(15);
+            text(this.Name_Player, this.x + 10, 180);
+            text('Cash' + this.amount_Of_Cash, this.x + 10, 200);
+            //text(this.Position, this.x + 10, 220); 
             while (this.player_properties[k] != null) {
-
-                text(this.player_properties[k], this.x + 10, 150 + yy);
+                textSize(12);
+                text(this.player_properties[k], this.x + 10, 240 + yy);
                 k++;
                 yy = yy + 10;
             }

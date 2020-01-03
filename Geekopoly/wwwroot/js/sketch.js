@@ -734,7 +734,7 @@ function dipslayPlayers() {
         PlayerArray[i].id_Player = response23.player_list[i].id_player;
         PlayerArray[i].Name_Player = response23.player_list[i].name;
         PlayerArray[i].Position = response23.player_list[i].position;
-       PlayerArray[i].is_Active = response23.player_list[i].is_active;
+        PlayerArray[i].is_Active = response23.player_list[i].is_active;
     }
     for (var i = 0; i < 4; i++) {
         
