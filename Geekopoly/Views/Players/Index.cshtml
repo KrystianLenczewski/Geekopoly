@@ -2,21 +2,26 @@
 @{
     ViewData["Title"] = "Index";
 }
-<br />
-<br />
-<br />
-<link rel="stylesheet" href="site.css">
+
+<html>
+<head>
+
+    <link rel="stylesheet" href="site.css">
+
+</head>
 
 
-
+<body>
+   
         @foreach (var item in Model)
         {
-            
-                    <a class="addName"asp-action="Edit" asp-route-id="@item.id_player">Add name</a>
-                    <br/>
-             
-        }
 
-<p>
+            <a class="addName" asp-action="Edit" asp-route-id="@item.id_player">Add name</a>
+            <br />
+
+        }
+  
     <a class="play" asp-action="GoToBoard">Play </a>
-</p>
+</body>
+
+</html>
