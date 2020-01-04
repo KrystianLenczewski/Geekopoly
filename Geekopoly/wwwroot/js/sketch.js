@@ -290,7 +290,7 @@ var canvas;
 function setup() {
     canvas = createCanvas(1400, 1150);
     background('#130E32');
-    canvas.position(100, 43);
+    canvas.position(100, 80);
     for (var i = 0; i < 3; i++) {
 
         for (var k = 0; k < 3; k++) {
@@ -571,47 +571,56 @@ function draw() {
     for (let k = 0; k < 9; k++) {
         if (k == 0) {
             fill('RED');
-            rect(newtile[k].x, newtile[k].alt-10, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].alt - 10, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
                
         }
         if (k == 1) {
             fill('YELLOW');
-            rect(newtile[k].x, newtile[k].y+160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 2) {
             fill('GREEN');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 3) {
             fill('BLUE');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 4) {
             fill('BROWN');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 5) {
             fill('#00CED1');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 6) {
             fill('PURPLE');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 7) {
             fill('ORANGE');
-            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 160, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
         if (k == 8) {
             fill('#FF1493');
-            rect(newtile[k].x, newtile[k].y + 190, newtile[k].lar, 10);
+            rect(newtile[k].x, newtile[k].y + 190, newtile[k].lar, 15);
+            rect(newtile[k].x, newtile[k].y, newtile[k].lar, 15);
 
         }
 

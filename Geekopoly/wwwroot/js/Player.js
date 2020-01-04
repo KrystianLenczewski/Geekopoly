@@ -20,7 +20,7 @@ class Player {
     show_player() {
         //noStroke();
         var k = 0;
-        var yy = 55;
+        var yy = 90;
         var height_rect = 340;
         fill(255);
         if (this.id_Player == 1) {
@@ -31,16 +31,19 @@ class Player {
 
             fill('BLACK');
             noStroke();
-            textStyle(NORMAL);
+            textStyle(BOLD);
+            textSize(20);
+            text(this.Name_Player, this.x + 65, 180);
+            textStyle(BOLD);
             textSize(15);
-            text(this.Name_Player, this.x + 10, 180);
-            text('Cash' + this.amount_Of_Cash, this.x + 10, 200);
-            //text(this.Position, this.x + 10, 220); 
+            text('Cash: ' + this.amount_Of_Cash, this.x + 55, 200);
+            text('Owned properties:', this.x + 10, 220); 
+            textStyle(NORMAL);
             while (this.player_properties[k] != null) {
                 textSize(12);
-                text(this.player_properties[k], this.x + 10, 240 + yy);
+                text(this.player_properties[k], this.x + 10, 155 + yy);
                 k++;
-                yy = yy + 10;
+                yy = yy + 12;
             }
         }
         else if (this.id_Player == 2) {
@@ -54,15 +57,18 @@ class Player {
             rect(this.x, 150, this.lar, height_rect);
             fill('BLACK');
             noStroke();
-            text(this.Name_Player, this.x + 10, 170);
-            text(this.amount_Of_Cash, this.x + 10, 180);
-            text(this.Position, this.x + 10, 190); 
-
+            textStyle(BOLD);
+            textSize(20);
+            text(this.Name_Player, this.x + 65, 180);
+            textSize(15);
+            text('Cash: ' + this.amount_Of_Cash, this.x + 55, 200);
+            text('Owned properties:', this.x + 10, 220);
+            textStyle(NORMAL);
             while (this.player_properties[k] != null) {
-
-                text(this.player_properties[k], this.x + 10, 150 + yy);
+                textSize(12);
+                text(this.player_properties[k], this.x + 10, 155 + yy);
                 k++;
-                yy = yy + 10;
+                yy = yy + 12;
             }
 
         }
@@ -74,14 +80,18 @@ class Player {
         if (this.id_Player != 1&& this.id_Player!=3) {
             fill('BLACK');
             noStroke();
-            text(this.Name_Player, this.x + 10, this.y + 20);
-            text(this.amount_Of_Cash, this.x + 10, this.y + 30);
-            text(this.Position, this.x + 10, this.y + 40);
+            textStyle(BOLD);
+            textSize(20);
+            text(this.Name_Player, this.x + 65, this.y + 30);
+            textSize(15);
+            text('Cash: ' + this.amount_Of_Cash, this.x + 65, this.y + 50);
+            text('Owned properties: ', this.x + 10, this.y + 70);
+            textStyle(NORMAL);
             while (this.player_properties[k] != null) {
-
+                textSize(12);
                 text(this.player_properties[k], this.x + 10, this.y + yy);
                 k++;
-                yy = yy + 10;
+                yy = yy + 12;
             }
         }
         

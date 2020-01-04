@@ -25,8 +25,8 @@ class category_class {
         fill('lightskyblue');
         rect(this.x, this.y, this.lar, this.alt);
         fill('BLACK');
-        text(this.nameOfCategory, this.x + 10, this.y + 20);
-
+        //text(this.nameOfCategory, this.x + 10, this.y + 20);
+        textSize(11);
         text(this.property1[0], this.x + 10, this.y + 40);
         textStyle(BOLD);
         if (this.owner_property_name[0] !== null) {
