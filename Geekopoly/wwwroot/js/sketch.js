@@ -14,6 +14,7 @@ var checkbox2;
 var checkbox3;
 var is_decision_made = false;
 
+
 var text_box;
 var popup_background;
 
@@ -333,6 +334,7 @@ function setup() {
         var posX = map(i, 0, 11, 0, widthheight);
         if (k < 21) {
             FieldArray[k] = new Tile(widthheight - 80, posX, 80, xx, FieldArray[k].id_Field, FieldArray[k].nameOfField, FieldArray[k].TypeOfField, FieldArray[k].Price);
+
             k = k + 1;
         }
     }
